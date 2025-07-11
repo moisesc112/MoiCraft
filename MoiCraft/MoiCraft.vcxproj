@@ -146,6 +146,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Includes\glad.c" />
     <ClCompile Include="MoiCraft.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Includes\glm\detail\func_common.inl" />
@@ -410,6 +411,7 @@
     <ClInclude Include="Includes\glm\vector_relational.hpp" />
     <ClInclude Include="Includes\shader_s.h" />
     <ClInclude Include="Includes\stb_image.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Includes\awesomeface.png" />
