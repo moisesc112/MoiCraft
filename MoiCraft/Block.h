@@ -9,16 +9,16 @@
 
 class Block
 {
+public:
+
+	Block(glm::vec3 position);
+	void setVertices(std::vector<float> vertices);
+	std::vector<float> getVertices();
+	void draw(Shader& shader, unsigned int VAO);
+
 private:
 	glm::vec3 position;
 	std::vector<float> vertices;
-
-public:
-	
-	Block(glm::vec3 position);
-	void setVertices();
-	std::vector<float> getVertices();
-	void draw(Shader& shader, unsigned int VAO);
 
 };
 
