@@ -11,6 +11,7 @@ class Block
 {
 public:
 
+	Block();
 	Block(glm::vec3 position);
 	void setVertices(std::vector<float> vertices);
 	std::vector<float> getVertices();

@@ -10,20 +10,26 @@
 #include <vector>
 #include "Window.h"
 #include "Block.h"
-
-void processInput(GLFWwindow* window);
+#include "Camera.h"
+#include "InputManager.h"
+#include "ChunkManager.h"
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int screenWidth = 800;
+const unsigned int screenHeight = 600;
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+const float cameraSpeed = 0.05f;
 
 int main()
 {
 
-    Window window(SCR_WIDTH, SCR_HEIGHT, "MoiCraft");
+    Window window(screenWidth, screenHeight, "MoiCraft");
+    Camera camera(cameraPos, cameraFront, cameraUp, cameraSpeed);
+    InputManager inputManager;
+    Block block;
+    ChunkManager chunkManager;
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -44,22 +50,7 @@ int main()
         "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/shader.fs"
     );
 
-    Block block(glm::vec3(0.0f, 0.0f, 0.0f)); // create a block
     std::vector<float> vertices = block.getVertices();
-
-
-    glm::vec3 cubePositions[] = {
-        glm::vec3(0.0f, 0.0f, 0.0f),
-        glm::vec3(2.0f, 5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3(2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f, 3.0f, -7.5f),
-        glm::vec3(1.3f, -2.0f, -2.5f),
-        glm::vec3(1.5f, 2.0f, -2.5f),
-        glm::vec3(1.5f, 0.2f, -1.5f),
-        glm::vec3(-1.3f, 1.0f, -1.5f)
-    };
 
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
@@ -146,7 +137,7 @@ int main()
     {
         // input
         // -----
-        processInput(window.getGLFWwindow());
+        inputManager.processInput(window.getGLFWwindow(), camera);
 
         // render
         // ------
@@ -162,12 +153,7 @@ int main()
         // activate shader
         ourShader.use();
 
-        // create transformations
-        glm::mat4 view;
-        glm::mat4 projection = glm::mat4(1.0f);
-        //model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+
         // retrieve the matrix uniform locations
         unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
         unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
@@ -175,34 +161,13 @@ int main()
         //glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         //glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
         // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-        ourShader.setMat4("projection", projection);
-        ourShader.setMat4("view", view);
+        ourShader.setMat4("projection", camera.getProjectionMatrix(screenWidth, screenHeight));
+        ourShader.setMat4("view", camera.getViewMatrix());
 
         // render box
         glBindVertexArray(VAO);
 
-
-       /* for (unsigned int i = 0; i < 10; i++)
-        {
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubepositions[i]);
-            float angle = 20.0f * i;
-            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-            ourshader.setmat4("model", model);
-
-            gldrawarrays(gl_triangles, 0, 36);
-        }*/
-
-        std::vector<Block> blocks;
-
-        for (glm::vec3 pos : cubePositions) {
-            blocks.push_back(Block(pos));
-        }
-
-        for (Block& block : blocks) {
-            block.draw(ourShader, VAO);
-        }
-
+        chunkManager.draw(ourShader, VAO);
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -222,22 +187,3 @@ int main()
     return 0;
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-    const float cameraSpeed = 0.05f; // adjust accordingly
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) *
-        cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) *
-        cameraSpeed;
-
-}
