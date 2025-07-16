@@ -13,11 +13,12 @@
 #include "Camera.h"
 #include "InputManager.h"
 #include "ChunkManager.h"
+#include "WorldManager.h"
 
 // settings
 const unsigned int screenWidth = 800;
 const unsigned int screenHeight = 600;
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraPos = glm::vec3(8.0f, 0.0f, 30.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 const float cameraSpeed = 0.05f;
@@ -26,10 +27,12 @@ int main()
 {
 
     Window window(screenWidth, screenHeight, "MoiCraft");
-    Camera camera(cameraPos, cameraFront, cameraUp, cameraSpeed);
+    Camera camera(cameraPos, cameraFront, cameraUp, cameraSpeed, screenWidth, screenHeight);
     InputManager inputManager;
     Block block;
-    ChunkManager chunkManager;
+
+    glfwSetInputMode(window.getGLFWwindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    Camera::setInstance(&camera);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -38,6 +41,9 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    ChunkManager chunkManager;
+    WorldManager worldManager;
 
     // configure global opengl state
     // -----------------------------
@@ -49,25 +55,6 @@ int main()
         "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/shader.vs",
         "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/shader.fs"
     );
-
-    std::vector<float> vertices = block.getVertices();
-
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // texture coord attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
 
     // load and create a texture 
 // -------------------------
@@ -138,6 +125,8 @@ int main()
         // input
         // -----
         inputManager.processInput(window.getGLFWwindow(), camera);
+        //inputManager.processCursorPosition(window.getGLFWwindow(), camera);
+        glfwSetCursorPosCallback(window.getGLFWwindow(), Camera::cursorCallback);
 
         // render
         // ------
@@ -153,22 +142,18 @@ int main()
         // activate shader
         ourShader.use();
 
-
         // retrieve the matrix uniform locations
         unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
         unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
+
         // pass them to the shaders (3 different ways)
-        //glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        //glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-        // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-        ourShader.setMat4("projection", camera.getProjectionMatrix(screenWidth, screenHeight));
+        ourShader.setMat4("projection", camera.getProjectionMatrix());
         ourShader.setMat4("view", camera.getViewMatrix());
 
         // render box
-        glBindVertexArray(VAO);
+        glBindVertexArray(chunkManager.getVAO());
 
-        chunkManager.draw(ourShader, VAO);
-
+        worldManager.draw(ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -178,8 +163,11 @@ int main()
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    //glDeleteVertexArrays(1, &VAO);
+    //glDeleteBuffers(1, &VBO);
+
+    chunkManager.deleteVAO();
+    chunkManager.deleteVBO();
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------

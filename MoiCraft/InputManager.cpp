@@ -5,6 +5,7 @@ InputManager::InputManager()
 
 }
 
+
 void InputManager::processInput(GLFWwindow* window, Camera& camera)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -17,4 +18,8 @@ void InputManager::processInput(GLFWwindow* window, Camera& camera)
         camera.processKeyboard('A');
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.processKeyboard('D');
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.processKeyboard('_');
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.processKeyboard('-');
 }

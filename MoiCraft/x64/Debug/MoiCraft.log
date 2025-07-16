@@ -1,2 +1,7 @@
-﻿  MoiCraft.cpp
+﻿  ChunkManager.cpp
+  MoiCraft.cpp
+  WorldManager.cpp
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(13,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(13,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
   MoiCraft.vcxproj -> C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe

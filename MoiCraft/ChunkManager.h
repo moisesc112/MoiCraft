@@ -7,21 +7,26 @@
 #include <shader_s.h>
 #include "Block.h"
 
-#define chunkWidth 16
-#define chunkHeight 5
-#define chunkDepth 16
+#define CHUNK_WIDTH 16
+#define CHUNK_HEIGHT 20
+#define CHUNK_DEPTH 16
 
 class ChunkManager
 {
 public:
 	ChunkManager();
-	void draw(Shader& shader, unsigned int VAO);
+	ChunkManager(glm::vec3 position);
+	void draw(Shader& shader);
+	unsigned int getVAO();
+	unsigned int getVBO();
+	void deleteVAO();
+	void deleteVBO();
 
 private:
-	Block blocks[chunkWidth][chunkHeight][chunkDepth];
+	Block blocks[CHUNK_WIDTH][CHUNK_HEIGHT][CHUNK_DEPTH];
 	unsigned int VAO;
 	unsigned int VBO;
-
+	glm::vec3 chunkPosition;
 };
 
 #endif 
