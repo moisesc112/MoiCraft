@@ -15,7 +15,7 @@ public:
 	Block(glm::vec3 position);
 	void setVertices(std::vector<float> vertices);
 	std::vector<float> getVertices();
-	void draw(Shader& shader, unsigned int VAO);
+	void draw(Shader& shader, glm::vec3 offset, unsigned int VAO);
 
 private:
 	glm::vec3 position;

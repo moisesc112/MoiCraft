@@ -150,6 +150,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MoiCraft.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WorldManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Includes\glm\detail\func_common.inl" />
@@ -418,6 +419,7 @@
     <ClInclude Include="Includes\stb_image.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WorldManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Includes\awesomeface.png" />
