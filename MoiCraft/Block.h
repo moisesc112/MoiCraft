@@ -7,6 +7,14 @@
 #include <shader_s.h>
 #include <vector>
 
+enum class BlockType
+{
+	Air,
+	Dirt,
+	Grass,
+	Stone
+};
+
 class Block
 {
 public:
@@ -14,12 +22,16 @@ public:
 	Block();
 	Block(glm::vec3 position);
 	void setVertices(std::vector<float> vertices);
-	std::vector<float> getVertices();
-	void draw(Shader& shader, glm::vec3 offset, unsigned int VAO);
+	const std::vector<std::vector<float>> getFaceData();
+	bool isAir();
+	BlockType getBlockType();
+	void setBlockType(BlockType blockType);
 
 private:
 	glm::vec3 position;
 	std::vector<float> vertices;
+	//std::vector<std::vector<float>> faceData;
+	BlockType blockType;
 
 };
 
