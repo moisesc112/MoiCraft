@@ -18,9 +18,9 @@
 // settings
 const unsigned int screenWidth = 800;
 const unsigned int screenHeight = 600;
-glm::vec3 cameraPos = glm::vec3(8.0f, 0.0f, 30.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f); 
 const float cameraSpeed = 0.05f;
 
 int main()
