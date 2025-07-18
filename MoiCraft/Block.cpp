@@ -76,7 +76,7 @@ Block::Block()
     blockType = BlockType::Stone; 
 }
 
-Block::Block(glm::vec3 position)
+Block::Block(glm::ivec3 position)
 {
     this->position = position;
     blockType = BlockType::Stone;

@@ -5,12 +5,12 @@ ChunkManager::ChunkManager()
 
 }
 
-ChunkManager::ChunkManager(glm::vec3 position)
+ChunkManager::ChunkManager(glm::ivec3 position)
 {
 	this->chunkPosition = position;
 	
 	//std::vector<float> vertices = block.getVertices();
-	std::vector<std::vector<float>> faceData = block.getFaceData();
+	faceData = block.getFaceData();
 
 	for (int i = 0; i < CHUNK_WIDTH; ++i)
 	{
@@ -18,13 +18,16 @@ ChunkManager::ChunkManager(glm::vec3 position)
 		{
 			for (int k = 0; k < CHUNK_DEPTH; ++k)
 			{
-				blocks[i][j][k] = Block(glm::vec3(i, j, k));
+				blocks[i][j][k] = Block(glm::ivec3(i, j, k));
+
+				if (i == CHUNK_WIDTH / 2 || j == CHUNK_HEIGHT / 2 || k == CHUNK_DEPTH / 2)
+				{
+					blocks[i][j][k].setBlockType(BlockType::Air);
+				}
 			}
 		}
 	}
-
 	generateMesh();
-
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 
@@ -39,48 +42,49 @@ ChunkManager::ChunkManager(glm::vec3 position)
 	// texture coord attribute
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
 }
 
 
 void ChunkManager::generateMesh()
 {
-	std::vector<std::vector<float>> faceData = block.getFaceData();
-
 	for (int i = 0; i < CHUNK_WIDTH; ++i)
 	{
-		for (int j = 0; j < CHUNK_HEIGHT; ++j)
+		for (int j = 0; j < CHUNK_HEIGHT; ++j) 
 		{
 			for (int k = 0; k < CHUNK_DEPTH; ++k)
 			{
-				if (i == CHUNK_WIDTH / 2 || i == CHUNK_HEIGHT / 2 || i == CHUNK_DEPTH / 2)
-					blocks[i][j][k].setBlockType(BlockType::Air);
+				glm::ivec3 position = { i,j,k };
 
 				if (blocks[i][j][k].isAir())
 					continue;
-				//blocks[i][j][k] = Block(glm::vec3(i, j, k));
-
-				//if (isFaceVisible(i, j, k, { 1, 0, 0 }))
-				//{
-					//addFace(block.returnFaceVertices('R'), glm::vec3(i, j, k));
-				//}
-				if (isFaceVisible(i, j, k, {0, 0, -1}))
-					addFace(faceData[0], glm::vec3(i, j, k));
-				if (isFaceVisible(i, j, k, {0, 0, 1}))
-					addFace(faceData[1], glm::vec3(i, j, k));
-				if (isFaceVisible(i, j, k, {-1, 0, 0}))
-					addFace(faceData[2], glm::vec3(i, j, k));
-				if (isFaceVisible(i, j, k, {1, 0, 0}))
-					addFace(faceData[3], glm::vec3(i, j, k));
-				if (isFaceVisible(i, j, k, {0, -1, 0}))
-					addFace(faceData[4], glm::vec3(i, j, k));
-				if (isFaceVisible(i, j, k, {0, 1, 0}))
-					addFace(faceData[5], glm::vec3(i, j, k));
-
+				if (isFaceVisible(position, { 0, 0, -1 })) 
+				{
+					addFace(faceData[static_cast<int>(FaceDirection::Front)], position);
+				}
+				if (isFaceVisible(position, { 0, 0, 1 }))
+				{
+					addFace(faceData[static_cast<int>(FaceDirection::Back)], position);
+				}
+				if (isFaceVisible(position, { -1, 0, 0 }))
+				{
+					addFace(faceData[static_cast<int>(FaceDirection::Left)], position);
+				}
+				if (isFaceVisible(position, { 1, 0, 0 }))
+				{
+					addFace(faceData[static_cast<int>(FaceDirection::Right)], position);
+				}
+				if (isFaceVisible(position, { 0, -1, 0 }))
+				{
+					addFace(faceData[static_cast<int>(FaceDirection::Bottom)], position);
+				}
+				if (isFaceVisible(position, { 0, 1, 0 }))
+				{
+					addFace(faceData[static_cast<int>(FaceDirection::Top)], position);
+				}
 			}
 		}
 	}
-
-
 }
 
 void ChunkManager::draw(Shader& ourShader)
@@ -114,7 +118,7 @@ void ChunkManager::deleteVBO()
 	glDeleteBuffers(1, &VBO);
 }
 
-void ChunkManager::addFace(std::vector<float> faceData, glm::vec3 position)
+void ChunkManager::addFace(const std::vector<float>& faceData, const glm::ivec3& position)
 {
 	for (int i = 0; i < faceData.size(); i += 5)
 	{
@@ -132,18 +136,20 @@ void ChunkManager::addFace(std::vector<float> faceData, glm::vec3 position)
 	}
 }
 
-bool ChunkManager::isFaceVisible(int x, int y, int z, glm::vec3 direction)
+bool ChunkManager::isFaceVisible(const glm::ivec3& position, const glm::ivec3& direction)
 {
-	int nx = x + direction.x;
-	int ny = y + direction.y;
-	int nz = z + direction.z;
+	int nx = position.x + direction.x;
+	int ny = position.y + direction.y;
+	int nz = position.z + direction.z;
 
-	// Out of bounds = visible face (since it's at chunk edge)
+	int x = position.x;
+	int y = position.y;
+	int z = position.z;
+
 	if ((nx < 0 || nx >= CHUNK_WIDTH) || (ny < 0 || ny >= CHUNK_HEIGHT) || (nz < 0 || nz >= CHUNK_DEPTH))
 	{
 		return true;
 	}
-	
-	//return false;
+
 	return blocks[nx][ny][nz].isAir();
 }
