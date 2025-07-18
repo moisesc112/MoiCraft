@@ -36,14 +36,12 @@ public:
 	WorldManager();
 	void draw(Shader& shader);
 	void update(const Camera& camera);
-
-private:
-	std::unordered_map<ChunkCoord, ChunkManager*> chunks;
-
-
-	void loadChunk(float x, float z);
+	void loadChunk(float x, float z, bool initialize);
 	void unloadChunk(float x, float z);
 	Block* getBlock(float x, float y, float z);
+	bool isBlockAir(const glm::ivec3& worldPos);
+private:
+	std::unordered_map<ChunkCoord, ChunkManager*> chunks;
 };
 
 #endif

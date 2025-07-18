@@ -1,4 +1,5 @@
 #include "ChunkManager.h"
+#include "WorldManager.h"
 
 ChunkManager::ChunkManager()
 {
@@ -9,7 +10,6 @@ ChunkManager::ChunkManager(glm::ivec3 position)
 {
 	this->chunkPosition = position;
 	
-	//std::vector<float> vertices = block.getVertices();
 	faceData = block.getFaceData();
 
 	for (int i = 0; i < CHUNK_WIDTH; ++i)
@@ -22,12 +22,25 @@ ChunkManager::ChunkManager(glm::ivec3 position)
 
 				if (i == CHUNK_WIDTH / 2 || j == CHUNK_HEIGHT / 2 || k == CHUNK_DEPTH / 2)
 				{
-					blocks[i][j][k].setBlockType(BlockType::Air);
+					//blocks[i][j][k].setBlockType(BlockType::Air);
 				}
 			}
 		}
 	}
+}
+
+void ChunkManager::setWorld(WorldManager* worldManager)
+{
+	this->world = worldManager;
+}
+
+void ChunkManager::initializeMesh()
+{
+	if (!world) {
+		std::cerr << "World is null during mesh generation!\n";
+	}
 	generateMesh();
+
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 
@@ -42,9 +55,7 @@ ChunkManager::ChunkManager(glm::ivec3 position)
 	// texture coord attribute
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-
 }
-
 
 void ChunkManager::generateMesh()
 {
@@ -90,7 +101,7 @@ void ChunkManager::generateMesh()
 void ChunkManager::draw(Shader& ourShader)
 {
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, chunkPosition);
+	model = glm::translate(model, glm::vec3(chunkPosition));
 	ourShader.setMat4("model", model);
 
 	glBindVertexArray(VAO);
@@ -138,18 +149,32 @@ void ChunkManager::addFace(const std::vector<float>& faceData, const glm::ivec3&
 
 bool ChunkManager::isFaceVisible(const glm::ivec3& position, const glm::ivec3& direction)
 {
-	int nx = position.x + direction.x;
-	int ny = position.y + direction.y;
-	int nz = position.z + direction.z;
+	glm::ivec3 neighborPos = position + direction;
 
-	int x = position.x;
-	int y = position.y;
-	int z = position.z;
+	if (neighborPos.x >= 0 && neighborPos.x < CHUNK_WIDTH &&
+		neighborPos.y >= 0 && neighborPos.y < CHUNK_HEIGHT &&
+		neighborPos.z >= 0 && neighborPos.z < CHUNK_DEPTH)
+	{
+		return blocks[neighborPos.x][neighborPos.y][neighborPos.z].isAir();
+	}
+	else
+	{
+		glm::ivec3 worldBlockPos = chunkPosition + position;
+		glm::ivec3 worldNeighborPos = worldBlockPos + direction;
+		return world->isBlockAir(worldNeighborPos);
+	}
 
-	if ((nx < 0 || nx >= CHUNK_WIDTH) || (ny < 0 || ny >= CHUNK_HEIGHT) || (nz < 0 || nz >= CHUNK_DEPTH))
+}
+
+bool ChunkManager::isBlockAir(const glm::ivec3& localPos)
+{
+
+	if (localPos.x < 0 || localPos.x >= CHUNK_WIDTH ||
+		localPos.y < 0 || localPos.y >= CHUNK_HEIGHT ||
+		localPos.z < 0 || localPos.z >= CHUNK_DEPTH)
 	{
 		return true;
 	}
-
-	return blocks[nx][ny][nz].isAir();
+	
+	return blocks[localPos.x][localPos.y][localPos.z].isAir();
 }
