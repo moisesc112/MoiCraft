@@ -15,12 +15,22 @@ enum class BlockType
 	Stone
 };
 
+enum class FaceDirection
+{
+	Front = 0,
+	Back,
+	Left,
+	Right,
+	Bottom,
+	Top
+};
+
 class Block
 {
 public:
 
 	Block();
-	Block(glm::vec3 position);
+	Block(glm::ivec3 position);
 	void setVertices(std::vector<float> vertices);
 	const std::vector<std::vector<float>> getFaceData();
 	bool isAir();
@@ -28,7 +38,7 @@ public:
 	void setBlockType(BlockType blockType);
 
 private:
-	glm::vec3 position;
+	glm::ivec3 position;
 	std::vector<float> vertices;
 	//std::vector<std::vector<float>> faceData;
 	BlockType blockType;

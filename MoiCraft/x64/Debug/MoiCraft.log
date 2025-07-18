@@ -1,18 +1,3 @@
 ﻿  ChunkManager.cpp
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(93,51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(137,9): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(138,9): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(139,9): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(99,51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   MoiCraft.vcxproj -> C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe

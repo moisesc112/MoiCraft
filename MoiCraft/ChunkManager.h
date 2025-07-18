@@ -17,7 +17,7 @@ class ChunkManager
 {
 public:
 	ChunkManager();
-	ChunkManager(glm::vec3 position);
+	ChunkManager(glm::ivec3 position);
 	void generateMesh();
 	void draw(Shader& shader);
 	unsigned int getVAO();
@@ -32,9 +32,10 @@ private:
 	unsigned int VBO;
 	glm::vec3 chunkPosition;
 	std::vector<float> vertices;
+	std::vector<std::vector<float>> faceData;
 
-	void addFace(std::vector<float> faceData, glm::vec3 position);
-	bool isFaceVisible(int x, int y, int z, glm::vec3 direction);
+	void addFace(const std::vector<float>& faceData, const glm::ivec3& position);
+	bool isFaceVisible(const glm::ivec3& position, const glm::ivec3& direction);
 };
 
 #endif 
