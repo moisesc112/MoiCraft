@@ -12,6 +12,8 @@ ChunkManager::ChunkManager(glm::ivec3 position)
 	
 	faceData = block.getFaceData();
 
+	siv::PerlinNoise noiseGenerator(12345);
+
 	for (int i = 0; i < CHUNK_WIDTH; ++i)
 	{
 		for (int j = 0; j < CHUNK_HEIGHT; ++j)
@@ -20,10 +22,24 @@ ChunkManager::ChunkManager(glm::ivec3 position)
 			{
 				blocks[i][j][k] = Block(glm::ivec3(i, j, k));
 
-				if (i == CHUNK_WIDTH / 2 || j == CHUNK_HEIGHT / 2 || k == CHUNK_DEPTH / 2)
-				{
-					//blocks[i][j][k].setBlockType(BlockType::Air);
+				float worldPosX = chunkPosition.x + i;
+				float worldPosZ = chunkPosition.z + k;
+				//float height = noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f) * (CHUNK_HEIGHT * 3.0f);
+
+				//int height = static_cast<int>(std::round(noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f) * (CHUNK_HEIGHT * 30.0f)));
+				float height = std::pow(noiseGenerator.noise2D_01(worldPosX * 0.15f, worldPosZ * 0.15f), 5.0f) * (CHUNK_HEIGHT * 6.0f);
+				if (j <= height) {
+					blocks[i][j][k].setBlockType(BlockType::Stone);
 				}
+				else {
+					blocks[i][j][k].setBlockType(BlockType::Air);
+				}
+
+
+				//if (i == CHUNK_WIDTH / 2 || j == CHUNK_HEIGHT / 2 || k == CHUNK_DEPTH / 2)
+				//{
+					//blocks[i][j][k].setBlockType(BlockType::Air);
+				//}
 			}
 		}
 	}
@@ -66,7 +82,22 @@ void ChunkManager::generateMesh()
 			for (int k = 0; k < CHUNK_DEPTH; ++k)
 			{
 				glm::ivec3 position = { i,j,k };
+				/*
+				float worldPosX = chunkPosition.x + i;
+				float worldPosZ = chunkPosition.z + k;
+				//float height = noiseGenerator.noise2D_01(worldPosX * 0.05, worldPosZ * 0.05) * CHUNK_HEIGHT;
 
+				int terrainHeight = static_cast<int>(std::round(
+					noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f) * (CHUNK_HEIGHT - 1)
+				));
+
+				if (j <= terrainHeight) {
+					blocks[i][j][k].setBlockType(BlockType::Stone);
+				}
+				else {
+					blocks[i][j][k].setBlockType(BlockType::Air);
+				}
+				*/
 				if (blocks[i][j][k].isAir())
 					continue;
 				if (isFaceVisible(position, { 0, 0, -1 })) 

@@ -1,10 +1,2 @@
-﻿  ChunkManager.cpp
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(108,51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  MoiCraft.cpp
-  WorldManager.cpp
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(15,17): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(15,14): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(33,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(33,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
+﻿  MoiCraft.cpp
   MoiCraft.vcxproj -> C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe

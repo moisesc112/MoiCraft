@@ -834,12 +834,18 @@
     <ClInclude Include="WorldManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Includes\PerlinNoise.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Includes\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Includes\container.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Includes\perfect_dirt.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
