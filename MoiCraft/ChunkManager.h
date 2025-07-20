@@ -8,9 +8,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Block.h"
+#include "PerlinNoise.hpp"
 
 #define CHUNK_WIDTH 16
-#define CHUNK_HEIGHT 2
+#define CHUNK_HEIGHT 10
 #define CHUNK_DEPTH 16
 
 class WorldManager;
@@ -40,6 +41,7 @@ private:
 	std::vector<float> vertices;
 	std::vector<std::vector<float>> faceData;
 	WorldManager* world;
+	siv::PerlinNoise noiseGenerator;
 };
 
 #endif 

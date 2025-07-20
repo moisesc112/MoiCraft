@@ -119,6 +119,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\Includes;C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\Includes\glm</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -415,6 +416,7 @@
     <ClInclude Include="Includes\glm\vec3.hpp" />
     <ClInclude Include="Includes\glm\vec4.hpp" />
     <ClInclude Include="Includes\glm\vector_relational.hpp" />
+    <ClInclude Include="Includes\PerlinNoise.hpp" />
     <ClInclude Include="Includes\shader_s.h" />
     <ClInclude Include="Includes\stb_image.h" />
     <ClInclude Include="InputManager.h" />
@@ -424,6 +426,7 @@
   <ItemGroup>
     <Image Include="Includes\awesomeface.png" />
     <Image Include="Includes\container.jpg" />
+    <Image Include="Includes\perfect_dirt.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -73,7 +73,7 @@ int main()
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    unsigned char* data = stbi_load("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/container.jpg", &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/perfect_dirt.jpg", &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -86,6 +86,8 @@ int main()
     stbi_image_free(data);
     // texture 2
     // ---------
+
+    
     glGenTextures(1, &texture2);
     glBindTexture(GL_TEXTURE_2D, texture2);
     // set the texture wrapping parameters
@@ -107,6 +109,8 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    
+    
 
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
