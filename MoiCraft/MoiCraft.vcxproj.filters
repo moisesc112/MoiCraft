@@ -39,6 +39,9 @@
     <ClCompile Include="WorldManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Includes\shader.fs" />
@@ -837,6 +840,9 @@
     <ClInclude Include="Includes\PerlinNoise.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Includes\awesomeface.png">
@@ -846,6 +852,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Includes\perfect_dirt.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Includes\grass_side.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Includes\grass_top.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Includes\stone.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

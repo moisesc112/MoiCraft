@@ -16,12 +16,14 @@ WorldManager::WorldManager()
 		}
 	}
 
-	for(auto it = chunks.begin(); it != chunks.end(); ++it) {
+	for(auto it = chunks.begin(); it != chunks.end(); ++it) 
+	{
 		ChunkManager* chunk = it->second;
 		chunk->setWorld(this);
 	}
 
-	for (auto it = chunks.begin(); it != chunks.end(); ++it) {
+	for (auto it = chunks.begin(); it != chunks.end(); ++it) 
+	{
 		ChunkManager* chunk = it->second;
 		chunk->initializeMesh();
 	}

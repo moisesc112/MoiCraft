@@ -150,6 +150,7 @@
     <ClCompile Include="Includes\glad.c" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MoiCraft.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WorldManager.cpp" />
   </ItemGroup>
@@ -420,13 +421,17 @@
     <ClInclude Include="Includes\shader_s.h" />
     <ClInclude Include="Includes\stb_image.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WorldManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Includes\awesomeface.png" />
     <Image Include="Includes\container.jpg" />
+    <Image Include="Includes\grass_side.jpg" />
+    <Image Include="Includes\grass_top.jpg" />
     <Image Include="Includes\perfect_dirt.jpg" />
+    <Image Include="Includes\stone.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -66,11 +66,14 @@ void ChunkManager::initializeMesh()
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// texture coord attribute
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 }
 
 void ChunkManager::generateMesh()
@@ -136,7 +139,7 @@ void ChunkManager::draw(Shader& ourShader)
 	ourShader.setMat4("model", model);
 
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 5);
+	glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 6);
 }
 
 
@@ -162,19 +165,21 @@ void ChunkManager::deleteVBO()
 
 void ChunkManager::addFace(const std::vector<float>& faceData, const glm::ivec3& position)
 {
-	for (int i = 0; i < faceData.size(); i += 5)
+	for (int i = 0; i < faceData.size(); i += 6)
 	{
 		float x = faceData[i + 0] + position.x;
 		float y = faceData[i + 1] + position.y;
 		float z = faceData[i + 2] + position.z;
 		float u = faceData[i + 3];
 		float v = faceData[i + 4];
+		float w = faceData[i + 5];
 
 		vertices.push_back(x);
 		vertices.push_back(y);
 		vertices.push_back(z);
 		vertices.push_back(u);
 		vertices.push_back(v);
+		vertices.push_back(w);
 	}
 }
 

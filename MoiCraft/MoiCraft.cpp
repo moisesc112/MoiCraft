@@ -1,6 +1,5 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <shader_s.h>
 #include <iostream>
@@ -14,6 +13,7 @@
 #include "InputManager.h"
 #include "ChunkManager.h"
 #include "WorldManager.h"
+#include "TextureManager.h"
 
 // settings
 const unsigned int screenWidth = 800;
@@ -44,6 +44,7 @@ int main()
 
     ChunkManager chunkManager;
     WorldManager worldManager;
+    TextureManager textureManager;
 
     // configure global opengl state
     // -----------------------------
@@ -56,9 +57,12 @@ int main()
         "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/shader.fs"
     );
 
+    textureManager.AddTextures();
+
+    /*
     // load and create a texture 
 // -------------------------
-    unsigned int texture1, texture2;
+    unsigned int texture1; //, texture2;
     // texture 1
     // ---------
     glGenTextures(1, &texture1);
@@ -73,7 +77,7 @@ int main()
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    unsigned char* data = stbi_load("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/perfect_dirt.jpg", &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/stone.jpg", &width, &height, &nrChannels, 0);
     if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -84,10 +88,12 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    */
     // texture 2
     // ---------
 
-    
+    /*
+   
     glGenTextures(1, &texture2);
     glBindTexture(GL_TEXTURE_2D, texture2);
     // set the texture wrapping parameters
@@ -109,18 +115,19 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
-    
+    */
     
 
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
-    ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
+    //ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
     //glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     // 
     // or set it via the texture clas
-    ourShader.setInt("texture1", 0);
-    ourShader.setInt("texture2", 1);
+
+    //ourShader.setInt("texture1", 0);
+    //ourShader.setInt("texture2", 1);
 
     // render loop
     // -----------
@@ -137,14 +144,16 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
 
+        ourShader.use();
+        textureManager.ActivateTexture(ourShader);
+
         // bind Texture
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, texture1);
+        //glActiveTexture(GL_TEXTURE1);
+        //glBindTexture(GL_TEXTURE_2D, texture2);
 
         // activate shader
-        ourShader.use();
 
         // retrieve the matrix uniform locations
         unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
