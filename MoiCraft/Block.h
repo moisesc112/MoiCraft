@@ -10,14 +10,14 @@
 enum class BlockType
 {
 	Air,
-	Dirt,
 	Grass,
+	Dirt,
 	Stone
 };
 
 enum class FaceDirection
 {
-	Front = 0,
+	Front,
 	Back,
 	Left,
 	Right,

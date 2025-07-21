@@ -29,7 +29,18 @@ ChunkManager::ChunkManager(glm::ivec3 position)
 				//int height = static_cast<int>(std::round(noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f) * (CHUNK_HEIGHT * 30.0f)));
 				float height = std::pow(noiseGenerator.noise2D_01(worldPosX * 0.15f, worldPosZ * 0.15f), 5.0f) * (CHUNK_HEIGHT * 6.0f);
 				if (j <= height) {
-					blocks[i][j][k].setBlockType(BlockType::Stone);
+					if (j >= 4 && j < 7) 
+					{
+						blocks[i][j][k].setBlockType(BlockType::Dirt);
+					}
+					else if (j >= 7 && j < 10)
+					{
+						blocks[i][j][k].setBlockType(BlockType::Grass);
+					}
+					else
+					{
+						blocks[i][j][k].setBlockType(BlockType::Stone);
+					}
 				}
 				else {
 					blocks[i][j][k].setBlockType(BlockType::Air);
@@ -66,14 +77,17 @@ void ChunkManager::initializeMesh()
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// texture coord attribute
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(5 * sizeof(float)));
+	// faceID attribute
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(5 * sizeof(float)));
 	glEnableVertexAttribArray(2);
+	// blockType attribute
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(3);
 }
 
 void ChunkManager::generateMesh()
@@ -139,7 +153,7 @@ void ChunkManager::draw(Shader& ourShader)
 	ourShader.setMat4("model", model);
 
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 6);
+	glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 7);
 }
 
 
@@ -165,21 +179,24 @@ void ChunkManager::deleteVBO()
 
 void ChunkManager::addFace(const std::vector<float>& faceData, const glm::ivec3& position)
 {
-	for (int i = 0; i < faceData.size(); i += 6)
+	float blockType = static_cast<float>(blocks[position.x][position.y][position.z].getBlockType());
+
+	for (int i = 0; i < faceData.size(); i += 7)
 	{
 		float x = faceData[i + 0] + position.x;
 		float y = faceData[i + 1] + position.y;
 		float z = faceData[i + 2] + position.z;
 		float u = faceData[i + 3];
 		float v = faceData[i + 4];
-		float w = faceData[i + 5];
+		float faceID = faceData[i + 5];
 
 		vertices.push_back(x);
 		vertices.push_back(y);
 		vertices.push_back(z);
 		vertices.push_back(u);
 		vertices.push_back(v);
-		vertices.push_back(w);
+		vertices.push_back(faceID);
+		vertices.push_back(blockType);
 	}
 }
 
