@@ -6,7 +6,11 @@ TextureManager::TextureManager()
 {
     textures[BlockType::Grass] = "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_top.jpg";
     textures[BlockType::Dirt] = "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/perfect_dirt.jpg";
-    textures[BlockType::Stone] = "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_side.jpg";
+    textures[BlockType::Stone] = "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/stone.jpg";
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_top.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/perfect_dirt.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/stone.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_side.jpg");
 }
 
 void TextureManager::AddTextures()
@@ -16,11 +20,9 @@ void TextureManager::AddTextures()
     
 
     for (const auto& pair : textures)
-    {
-        //unsigned int textureIndex = 1;
-        const char* texturePath = pair.second;
-        InitializeTextures(texturePath);
-        //textureIndex++;
+    {  
+        //const char* texturePath = pair.second;
+        //InitializeTextures(texturePath);
     }
 }
 
@@ -63,12 +65,14 @@ void TextureManager::ActivateTexture(Shader& ourShader)
     {
         glActiveTexture(GL_TEXTURE0 + i);
         glBindTexture(GL_TEXTURE_2D, textureIDs[i]);
-       if (i == 0)
+        if (i == 0)
             ourShader.setInt("texture_GrassTop", 0);
-       else if (i == 1)
-         ourShader.setInt("texture_Dirt", 1);
-       else 
-           ourShader.setInt("texture_GrassSide", 2);
+        else if (i == 1)
+            ourShader.setInt("texture_Dirt", 1);
+        else if (i == 2)
+            ourShader.setInt("texture_Stone", 2);
+        else if (i == 3)
+            ourShader.setInt("texture_GrassSide", 3);
     }
     
     /*

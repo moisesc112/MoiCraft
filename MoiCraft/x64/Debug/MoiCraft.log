@@ -1,2 +1,6 @@
-﻿  Block.cpp
+﻿  ChunkManager.cpp
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(25,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(26,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(30,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(156,51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   MoiCraft.vcxproj -> C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe
