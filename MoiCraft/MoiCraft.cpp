@@ -165,7 +165,8 @@ int main()
 
         // render box
         glBindVertexArray(chunkManager.getVAO());
-
+        
+        worldManager.update(camera);
         worldManager.draw(ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

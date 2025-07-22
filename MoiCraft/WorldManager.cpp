@@ -2,15 +2,15 @@
 
 WorldManager::WorldManager()
 {
-
+	unsigned int worldSeed = static_cast<unsigned int>(std::time(nullptr));
 
 	//loadChunk(0, 0, false);
 	//loadChunk(1, 0, false);
 	//loadChunk(1, 1, false);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < RENDER_DISTANCE; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < RENDER_DISTANCE; j++)
 		{
 			loadChunk(i, j, false);
 		}
@@ -35,11 +35,30 @@ void WorldManager::loadChunk(float x, float z, bool initialize)
 	ChunkCoord chunkCoord(x, z);
 	if (chunks.find(chunkCoord) == chunks.end())
 	{
-		chunks[chunkCoord] = new ChunkManager(glm::ivec3(x * CHUNK_WIDTH, 0.0f, z * CHUNK_DEPTH));
+		chunks[chunkCoord] = new ChunkManager(glm::ivec3(x * CHUNK_WIDTH, 0.0f, z * CHUNK_DEPTH), worldSeed);
 		if (initialize)
 		{
 			chunks[chunkCoord]->setWorld(this);
 			chunks[chunkCoord]->initializeMesh();
+		}
+	}
+}
+
+void WorldManager::unloadChunk(int playerChunkPosX, int playerChunkPosZ)
+{
+	for (auto it = chunks.begin(); it != chunks.end();)
+	{
+		int dx = it->first.x - playerChunkPosX;
+		int dz = it->first.z - playerChunkPosZ;
+
+		if (std::abs(dx) > RENDER_DISTANCE || std::abs(dz) > RENDER_DISTANCE)
+		{
+			delete it->second;
+			it = chunks.erase(it);
+		}
+		else
+		{
+			++it;
 		}
 	}
 }
@@ -56,6 +75,23 @@ void WorldManager::draw(Shader& ourShader)
 
 void WorldManager::update(const Camera& camera)
 {
+	glm::vec3 playerPos = camera.getPosition();
+	
+	int playerChunkPosX = static_cast<int>(std::floor(playerPos.x / CHUNK_WIDTH));
+	int playerChunkPosZ = static_cast<int>(std::floor(playerPos.z / CHUNK_DEPTH));
+
+
+	unloadChunk(playerChunkPosX, playerChunkPosZ);
+
+	for (int dx = -RENDER_DISTANCE; dx <= RENDER_DISTANCE; ++dx)
+	{
+		for (int dz = -RENDER_DISTANCE; dz <= RENDER_DISTANCE; ++dz)
+		{
+			int chunkPosX = playerChunkPosX + dx;
+			int chunkPosZ = playerChunkPosZ + dz;
+			loadChunk(chunkPosX, chunkPosZ, true);
+		}
+	}
 
 }
 
