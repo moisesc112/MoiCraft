@@ -7,6 +7,10 @@
 #include <shader_s.h>
 #include "ChunkManager.h"
 #include "Camera.h"
+#include <random>
+#include <ctime>
+
+#define RENDER_DISTANCE 5
 
 struct ChunkCoord {
 	int x;
@@ -37,11 +41,12 @@ public:
 	void draw(Shader& shader);
 	void update(const Camera& camera);
 	void loadChunk(float x, float z, bool initialize);
-	void unloadChunk(float x, float z);
+	void unloadChunk(int playerChunkPosX, int playerChunkPosZ);
 	Block* getBlock(float x, float y, float z);
 	bool isBlockAir(const glm::ivec3& worldPos);
 private:
 	std::unordered_map<ChunkCoord, ChunkManager*> chunks;
+	unsigned int worldSeed;
 };
 
 #endif

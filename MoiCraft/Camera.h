@@ -15,6 +15,7 @@ public:
 
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjectionMatrix();
+	glm::vec3 getPosition() const;
 	void processKeyboard(char keyPress);
 	void processCursor(double mouseX, double mouseY);
 

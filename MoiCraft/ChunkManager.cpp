@@ -6,13 +6,13 @@ ChunkManager::ChunkManager()
 
 }
 
-ChunkManager::ChunkManager(glm::ivec3 position)
+ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 {
 	this->chunkPosition = position;
 	
 	faceData = block.getFaceData();
 
-	siv::PerlinNoise noiseGenerator(12345);
+	siv::PerlinNoise noiseGenerator(seed);
 
 	for (int i = 0; i < CHUNK_WIDTH; ++i)
 	{

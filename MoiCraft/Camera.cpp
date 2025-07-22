@@ -31,6 +31,11 @@ glm::mat4 Camera::getProjectionMatrix()
 	return projection = glm::perspective(glm::radians(45.0f), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 }
 
+glm::vec3 Camera::getPosition() const
+{
+	return position;
+}
+
 void Camera::processKeyboard(char keyPress)
 {
 	switch (keyPress)
