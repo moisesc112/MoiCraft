@@ -38,6 +38,7 @@ class WorldManager
 {
 public:
 	WorldManager();
+	~WorldManager();
 	void draw(Shader& shader);
 	void update(const Camera& camera);
 	void loadChunk(float x, float z, bool initialize);

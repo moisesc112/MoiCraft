@@ -132,3 +132,12 @@ bool WorldManager::isBlockAir(const glm::ivec3& worldPos)
 
 	return chunk->isBlockAir(localPos);
 }
+
+WorldManager::~WorldManager()
+{
+	for (auto& pair : chunks)
+	{
+		delete pair.second;
+	}
+	chunks.clear();
+}
