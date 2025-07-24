@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include <random>
 #include <ctime>
+#include <unordered_set>
 
 #define RENDER_DISTANCE 5
 
@@ -41,7 +42,7 @@ public:
 	~WorldManager();
 	void draw(Shader& shader);
 	void update(const Camera& camera);
-	void loadChunk(float x, float z, bool initialize);
+	void loadChunk(int x, int z, bool initialize);
 	void unloadChunk(int playerChunkPosX, int playerChunkPosZ);
 	Block* getBlock(float x, float y, float z);
 	bool isBlockAir(const glm::ivec3& worldPos);
