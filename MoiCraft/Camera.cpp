@@ -14,11 +14,17 @@ Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, u
 
 	view = glm::mat4(1.0f);
 	projection = glm::mat4(1.0f);
+	projection = glm::perspective(glm::radians(70.0f), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 }
 
 void Camera::setInstance(Camera* camera)
 {
 	instance = camera;
+}
+
+Camera* Camera::getInstance()
+{
+	return instance;
 }
 
 glm::mat4 Camera::getViewMatrix()
@@ -28,7 +34,7 @@ glm::mat4 Camera::getViewMatrix()
 
 glm::mat4 Camera::getProjectionMatrix()
 {
-	return projection = glm::perspective(glm::radians(45.0f), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
+	return projection;
 }
 
 glm::vec3 Camera::getPosition() const
@@ -101,4 +107,9 @@ void Camera::processCursor(double mouseX, double mouseY)
     front = glm::normalize(glm::rotate(front, (float)glm::radians(pitch), glm::normalize(glm::cross(front, up))));
 
 	oldMousePosition = currentMouse;
+}
+
+void Camera::updateProjection(int width, int height)
+{
+	projection = glm::perspective(glm::radians(70.0f), (float)width / (float)height, 0.1f, 100.0f);
 }

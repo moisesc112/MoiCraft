@@ -18,9 +18,11 @@ public:
 	glm::vec3 getPosition() const;
 	void processKeyboard(char keyPress);
 	void processCursor(double mouseX, double mouseY);
+	void updateProjection(int width, int height);
 
 	static void cursorCallback(GLFWwindow* window, double mouseX, double mouseY);
 	static void setInstance(Camera* camera);
+	static Camera* getInstance();
 
 private:
 	glm::vec3 position;

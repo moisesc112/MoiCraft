@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Camera.h"
 #include <iostream>
 
 Window::Window(unsigned int width, unsigned int height, const char* title)
@@ -57,4 +58,6 @@ GLFWwindow* Window::getGLFWwindow()
 void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+
+	Camera::getInstance()->updateProjection(width, height);
 }
