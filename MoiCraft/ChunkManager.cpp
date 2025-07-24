@@ -24,10 +24,11 @@ ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 
 				float worldPosX = chunkPosition.x + i;
 				float worldPosZ = chunkPosition.z + k;
-				//float height = noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f) * (CHUNK_HEIGHT * 3.0f);
 
-				//int height = static_cast<int>(std::round(noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f) * (CHUNK_HEIGHT * 30.0f)));
-				float height = std::pow(noiseGenerator.noise2D_01(worldPosX * 0.15f, worldPosZ * 0.15f), 5.0f) * (CHUNK_HEIGHT * 6.0f);
+				float base = noiseGenerator.noise2D_01(worldPosX * 0.01f, worldPosZ * 0.01f) * 0.05f;
+				float mountain = std::pow(noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f), 1.5f) * 30.0f;
+				float height = base + mountain;
+
 				if (j <= height) {
 					if (j >= 4 && j < 7) 
 					{
@@ -45,12 +46,6 @@ ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 				else {
 					blocks[i][j][k].setBlockType(BlockType::Air);
 				}
-
-
-				//if (i == CHUNK_WIDTH / 2 || j == CHUNK_HEIGHT / 2 || k == CHUNK_DEPTH / 2)
-				//{
-					//blocks[i][j][k].setBlockType(BlockType::Air);
-				//}
 			}
 		}
 	}
@@ -63,13 +58,24 @@ void ChunkManager::setWorld(WorldManager* worldManager)
 
 void ChunkManager::initializeMesh()
 {
+
+	if (meshInitialized && !dirty)
+	{
+		return;
+	}
+
 	if (!world) {
 		std::cerr << "World is null during mesh generation!\n";
 	}
+
 	generateMesh();
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
+	if (!meshInitialized)
+	{
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
+		meshInitialized = true;
+	}
 
 	glBindVertexArray(VAO);
 
@@ -88,10 +94,14 @@ void ChunkManager::initializeMesh()
 	// blockType attribute
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(3);
+
+	dirty = false;
 }
 
 void ChunkManager::generateMesh()
 {
+	vertices.clear();
+
 	for (int i = 0; i < CHUNK_WIDTH; ++i)
 	{
 		for (int j = 0; j < CHUNK_HEIGHT; ++j) 
@@ -99,24 +109,10 @@ void ChunkManager::generateMesh()
 			for (int k = 0; k < CHUNK_DEPTH; ++k)
 			{
 				glm::ivec3 position = { i,j,k };
-				/*
-				float worldPosX = chunkPosition.x + i;
-				float worldPosZ = chunkPosition.z + k;
-				//float height = noiseGenerator.noise2D_01(worldPosX * 0.05, worldPosZ * 0.05) * CHUNK_HEIGHT;
 
-				int terrainHeight = static_cast<int>(std::round(
-					noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f) * (CHUNK_HEIGHT - 1)
-				));
-
-				if (j <= terrainHeight) {
-					blocks[i][j][k].setBlockType(BlockType::Stone);
-				}
-				else {
-					blocks[i][j][k].setBlockType(BlockType::Air);
-				}
-				*/
 				if (blocks[i][j][k].isAir())
 					continue;
+
 				if (isFaceVisible(position, { 0, 0, -1 })) 
 				{
 					addFace(faceData[static_cast<int>(FaceDirection::Front)], position);
@@ -230,4 +226,8 @@ bool ChunkManager::isBlockAir(const glm::ivec3& localPos)
 	}
 	
 	return blocks[localPos.x][localPos.y][localPos.z].isAir();
+}
+
+void ChunkManager::markDirty() {
+	dirty = true;
 }

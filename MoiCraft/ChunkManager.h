@@ -11,7 +11,7 @@
 #include "PerlinNoise.hpp"
 
 #define CHUNK_WIDTH 16
-#define CHUNK_HEIGHT 10
+#define CHUNK_HEIGHT 20
 #define CHUNK_DEPTH 16
 
 class WorldManager;
@@ -32,6 +32,7 @@ public:
 	void setWorld(WorldManager* worldManager);
 	void addFace(const std::vector<float>& faceData, const glm::ivec3& position);
 	bool isFaceVisible(const glm::ivec3& position, const glm::ivec3& direction);
+	void markDirty();
 private:
 	Block block;
 	Block blocks[CHUNK_WIDTH][CHUNK_HEIGHT][CHUNK_DEPTH];
@@ -42,6 +43,8 @@ private:
 	std::vector<std::vector<float>> faceData;
 	WorldManager* world;
 	siv::PerlinNoise noiseGenerator;
+	bool meshInitialized = false;
+	bool dirty = false;
 };
 
 #endif 

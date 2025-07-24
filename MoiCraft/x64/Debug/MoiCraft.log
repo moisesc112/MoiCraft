@@ -1,15 +1,7 @@
 ﻿  ChunkManager.cpp
 C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(25,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
 C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(26,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(30,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(156,51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  MoiCraft.cpp
-  WorldManager.cpp
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(15,17): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(15,14): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(35,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(35,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(92,25): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\WorldManager.cpp(92,14): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(28,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(29,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(152,51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   MoiCraft.vcxproj -> C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe
