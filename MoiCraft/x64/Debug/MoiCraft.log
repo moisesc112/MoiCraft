@@ -1,4 +1,15 @@
-﻿  MoiCraft.cpp
+﻿  Block.cpp
+  ChunkManager.cpp
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(26,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(27,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(29,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(30,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(153,51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  MoiCraft.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.22000.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
 C:\Users\moise\Documents\OpenGL\includes\glad\glad.h(32): message : see previous definition of 'APIENTRY'
+  TextureManager.cpp
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\TextureManager.cpp(92,27): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  WorldManager.cpp
+  Generating Code...
   MoiCraft.vcxproj -> C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe

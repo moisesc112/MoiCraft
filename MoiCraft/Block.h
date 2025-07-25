@@ -40,7 +40,6 @@ public:
 private:
 	glm::ivec3 position;
 	std::vector<float> vertices;
-	//std::vector<std::vector<float>> faceData;
 	BlockType blockType;
 
 };
