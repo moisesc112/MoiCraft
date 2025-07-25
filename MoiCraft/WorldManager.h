@@ -11,6 +11,8 @@
 #include <ctime>
 #include <unordered_set>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
 
 #define RENDER_DISTANCE 5
 
