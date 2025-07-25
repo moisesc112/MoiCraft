@@ -180,8 +180,8 @@ int main()
     //glDeleteVertexArrays(1, &VAO);
     //glDeleteBuffers(1, &VBO);
 
-    chunkManager.deleteVAO();
-    chunkManager.deleteVBO();
+    //chunkManager.deleteVAO();
+    //chunkManager.deleteVBO();
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------

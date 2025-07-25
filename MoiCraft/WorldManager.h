@@ -10,6 +10,7 @@
 #include <random>
 #include <ctime>
 #include <unordered_set>
+#include <thread>
 
 #define RENDER_DISTANCE 5
 
@@ -46,6 +47,7 @@ public:
 	void unloadChunk(int playerChunkPosX, int playerChunkPosZ);
 	Block* getBlock(float x, float y, float z);
 	bool isBlockAir(const glm::ivec3& worldPos);
+	void loadWorker(int x, int z, bool initialize);
 private:
 	std::unordered_map<ChunkCoord, ChunkManager*> chunks;
 	unsigned int worldSeed;

@@ -20,6 +20,7 @@ class ChunkManager
 {
 public:
 	ChunkManager();
+	~ChunkManager();
 	ChunkManager(glm::ivec3 position, unsigned int seed);
 	void initializeMesh();
 	void generateMesh();

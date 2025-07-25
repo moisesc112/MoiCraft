@@ -101,7 +101,7 @@ void Camera::processCursor(double mouseX, double mouseY)
 	pitch = mouseDelta.y * mouseSensitivity;
 
 	//std::cout << "mouseX: " << mouseX << std::endl;
-	std::cout << "pitch: " << pitch << std::endl;
+	//std::cout << "pitch: " << pitch << std::endl;
 
 	front = glm::normalize(glm::rotate(front, (float)glm::radians(yaw), up));
     front = glm::normalize(glm::rotate(front, (float)glm::radians(pitch), glm::normalize(glm::cross(front, up))));

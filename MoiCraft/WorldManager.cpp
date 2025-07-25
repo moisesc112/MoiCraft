@@ -4,6 +4,8 @@ WorldManager::WorldManager()
 {
 	this->worldSeed = static_cast<unsigned int>(std::time(nullptr));
 
+	std::thread loadThread();
+
 	//loadChunk(0, 0, false);
 	//loadChunk(1, 0, false);
 	//loadChunk(1, 1, false);
@@ -85,6 +87,12 @@ void WorldManager::loadChunk(int x, int z, bool initialize)
 		}
 		
 	}
+}
+
+
+void WorldManager::loadWorker(int x, int z, bool initialize)
+{
+
 }
 
 void WorldManager::unloadChunk(int playerChunkPosX, int playerChunkPosZ)
