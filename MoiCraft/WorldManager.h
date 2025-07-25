@@ -7,12 +7,6 @@
 #include <shader_s.h>
 #include "ChunkManager.h"
 #include "Camera.h"
-#include <random>
-#include <ctime>
-#include <unordered_set>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
 
 #define RENDER_DISTANCE 5
 
@@ -47,9 +41,8 @@ public:
 	void update(const Camera& camera);
 	void loadChunk(int x, int z, bool initialize);
 	void unloadChunk(int playerChunkPosX, int playerChunkPosZ);
-	Block* getBlock(float x, float y, float z);
+	//Block* getBlock(float x, float y, float z);
 	bool isBlockAir(const glm::ivec3& worldPos);
-	void loadWorker(int x, int z, bool initialize);
 private:
 	std::unordered_map<ChunkCoord, ChunkManager*> chunks;
 	unsigned int worldSeed;

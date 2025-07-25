@@ -4,20 +4,11 @@ WorldManager::WorldManager()
 {
 	this->worldSeed = static_cast<unsigned int>(std::time(nullptr));
 
-	std::thread loadThread();
-
-	//loadChunk(0, 0, false);
-	//loadChunk(1, 0, false);
-	//loadChunk(1, 1, false);
-
-	//std::vector<ChunkCoord> newlyLoaded;
-
 	for (int i = -RENDER_DISTANCE; i <= RENDER_DISTANCE; i++)
 	{
 		for (int j = -RENDER_DISTANCE; j <= RENDER_DISTANCE; j++)
 		{
 			loadChunk(i, j, false);
-			//newlyLoaded.emplace_back(i, j);
 		}
 	}
 
@@ -32,27 +23,6 @@ WorldManager::WorldManager()
 		ChunkManager* chunk = it->second;
 		chunk->initializeMesh();
 	}
-
-	/*
-	std::unordered_set<ChunkCoord> affectedChunks;
-	for (const auto& coord : newlyLoaded)
-	{
-		affectedChunks.insert(coord);
-		affectedChunks.insert(ChunkCoord(coord.x + 1, coord.z));
-		affectedChunks.insert(ChunkCoord(coord.x - 1, coord.z));
-		affectedChunks.insert(ChunkCoord(coord.x, coord.z + 1));
-		affectedChunks.insert(ChunkCoord(coord.x, coord.z - 1));
-	}
-
-	for (const auto& coord : affectedChunks)
-	{
-		auto it = chunks.find(coord);
-		if (it != chunks.end())
-		{
-			it->second->initializeMesh();
-		}
-	}
-	*/
 }
 
 
@@ -90,11 +60,6 @@ void WorldManager::loadChunk(int x, int z, bool initialize)
 }
 
 
-void WorldManager::loadWorker(int x, int z, bool initialize)
-{
-
-}
-
 void WorldManager::unloadChunk(int playerChunkPosX, int playerChunkPosZ)
 {
 	for (auto it = chunks.begin(); it != chunks.end();)
@@ -131,8 +96,6 @@ void WorldManager::update(const Camera& camera)
 	int playerChunkPosX = static_cast<int>(std::floor(playerPos.x / CHUNK_WIDTH));
 	int playerChunkPosZ = static_cast<int>(std::floor(playerPos.z / CHUNK_DEPTH));
 
-	//std::vector<ChunkCoord> newlyLoaded;
-
 	unloadChunk(playerChunkPosX, playerChunkPosZ);
 
 	for (int dx = -RENDER_DISTANCE; dx <= RENDER_DISTANCE; ++dx)
@@ -143,9 +106,6 @@ void WorldManager::update(const Camera& camera)
 			int chunkPosZ = playerChunkPosZ + dz;
 			ChunkCoord chunkCoord(chunkPosX, chunkPosZ);
 			loadChunk(chunkPosX, chunkPosZ, false);
-			//newlyLoaded.push_back(chunkCoord);
-			//[chunkCoord]->setWorld(this);
-			//chunks[chunkCoord]->initializeMesh();
 		}
 	}
 
@@ -155,69 +115,17 @@ void WorldManager::update(const Camera& camera)
 		pair.second->setWorld(this);
 		pair.second->initializeMesh();
 	}
-
-	/*
-	std::unordered_set<ChunkCoord> affectedChunks;
-
-	for (const auto& coord : newlyLoaded) 
-	{
-		affectedChunks.insert(coord); // new chunk itself
-
-		// add 4 cardinal neighbors
-		ChunkCoord neighborOffsets[] =
-		{
-		{coord.x + 1, coord.z}, {coord.x - 1, coord.z},
-		{coord.x, coord.z + 1}, {coord.x, coord.z - 1}
-		};
-
-
-		for (const auto& neighbor : neighborOffsets) 
-		{
-			affectedChunks.insert(neighbor);
-
-		
-			if (chunks.count(neighbor)) 
-			{
-				affectedChunks.insert(neighbor);
-			}
-		}
-	}
-
-	for (const auto& coord : affectedChunks) 
-	{
-		auto it = chunks.find(coord);
-		if (it != chunks.end()) 
-		{
-			it->second->initializeMesh();
-		}
-	}
-	*/
 }
 
 bool WorldManager::isBlockAir(const glm::ivec3& worldPos)
 {
-	//int chunkX = worldPos.x / CHUNK_WIDTH;
-	//int chunkZ = worldPos.z / CHUNK_DEPTH;
-
 	int chunkX = static_cast<int>(std::floor(worldPos.x / static_cast<float>(CHUNK_WIDTH)));
 	int chunkZ = static_cast<int>(std::floor(worldPos.z / static_cast<float>(CHUNK_DEPTH)));
-
-	/*
-	if (worldPos.x < 0)
-	{
-		chunkX--;
-	}
-	if (worldPos.z < 0)
-	{
-		chunkZ--;
-	}
-	*/
 
 	ChunkCoord chunkCoord(chunkX, chunkZ);
 	auto it = chunks.find(chunkCoord);
 	if (it == chunks.end())
 	{
-		//std::cout << "Missing neighbor chunk at " << chunkX << ", " << chunkZ << "\n";
 		return true;
 	}
 
