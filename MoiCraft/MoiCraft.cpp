@@ -50,8 +50,8 @@ int main()
         return -1;
     }
 
-    ChunkManager chunkManager;
-    WorldManager worldManager;
+    ChunkManager* chunkManager = new ChunkManager();
+    WorldManager* worldManager = new WorldManager();
     TextureManager textureManager;
 
     glEnable(GL_DEPTH_TEST);
@@ -80,10 +80,10 @@ int main()
         ourShader.setMat4("projection", camera.getProjectionMatrix());
         ourShader.setMat4("view", camera.getViewMatrix());
 
-        glBindVertexArray(chunkManager.getVAO());
+        glBindVertexArray(chunkManager->getVAO());
         
-        worldManager.update(camera);
-        worldManager.draw(ourShader);
+        worldManager->update(camera);
+        worldManager->draw(ourShader);
         std::cout << "Memory usage: " << getMemoryUsageMB() << " MB\n";
 
         window.swapBuffers();
