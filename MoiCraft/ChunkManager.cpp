@@ -69,7 +69,6 @@ void ChunkManager::initializeMesh()
 	}
 
 	generateMesh();
-
 	if (!meshInitialized)
 	{
 		glGenVertexArrays(1, &VAO);
@@ -94,6 +93,7 @@ void ChunkManager::initializeMesh()
 	// blockType attribute
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(3);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	dirty = false;
 }
@@ -230,4 +230,12 @@ bool ChunkManager::isBlockAir(const glm::ivec3& localPos)
 
 void ChunkManager::markDirty() {
 	dirty = true;
+}
+
+ChunkManager::~ChunkManager()
+{
+	if (VAO != 0)
+		glDeleteVertexArrays(1, &VAO);
+	if (VBO != 0)
+		glDeleteBuffers(1, &VBO);
 }
