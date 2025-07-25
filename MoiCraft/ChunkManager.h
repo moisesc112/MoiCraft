@@ -34,9 +34,10 @@ public:
 	void addFace(const std::vector<float>& faceData, const glm::ivec3& position);
 	bool isFaceVisible(const glm::ivec3& position, const glm::ivec3& direction);
 	void markDirty();
+	inline Block& getBlock(int x, int y, int z);
 private:
 	Block block;
-	Block blocks[CHUNK_WIDTH][CHUNK_HEIGHT][CHUNK_DEPTH];
+	std::vector<Block> blocks;
 	unsigned int VAO;
 	unsigned int VBO;
 	glm::ivec3 chunkPosition;

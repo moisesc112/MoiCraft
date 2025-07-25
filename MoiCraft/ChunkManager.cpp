@@ -14,13 +14,14 @@ ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 
 	siv::PerlinNoise noiseGenerator(seed);
 
+	blocks.resize(CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPTH);
+
 	for (int i = 0; i < CHUNK_WIDTH; ++i)
 	{
 		for (int j = 0; j < CHUNK_HEIGHT; ++j)
 		{
 			for (int k = 0; k < CHUNK_DEPTH; ++k)
-			{
-				blocks[i][j][k] = Block(glm::ivec3(i, j, k));
+			{			
 
 				float worldPosX = chunkPosition.x + i;
 				float worldPosZ = chunkPosition.z + k;
@@ -32,19 +33,19 @@ ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 				if (j <= height) {
 					if (j >= 4 && j < 7) 
 					{
-						blocks[i][j][k].setBlockType(BlockType::Dirt);
+						getBlock(i, j, k).setBlockType(BlockType::Dirt);
 					}
 					else if (j >= 7 && j < 10)
 					{
-						blocks[i][j][k].setBlockType(BlockType::Grass);
+						getBlock(i, j, k).setBlockType(BlockType::Grass);
 					}
 					else
 					{
-						blocks[i][j][k].setBlockType(BlockType::Stone);
+						getBlock(i, j, k).setBlockType(BlockType::Stone);
 					}
 				}
 				else {
-					blocks[i][j][k].setBlockType(BlockType::Air);
+					getBlock(i, j, k).setBlockType(BlockType::Air);
 				}
 			}
 		}
@@ -110,7 +111,7 @@ void ChunkManager::generateMesh()
 			{
 				glm::ivec3 position = { i,j,k };
 
-				if (blocks[i][j][k].isAir())
+				if (getBlock(i, j, k).isAir())
 					continue;
 
 				if (isFaceVisible(position, { 0, 0, -1 })) 
@@ -175,7 +176,7 @@ void ChunkManager::deleteVBO()
 
 void ChunkManager::addFace(const std::vector<float>& faceData, const glm::ivec3& position)
 {
-	float blockType = static_cast<float>(blocks[position.x][position.y][position.z].getBlockType());
+	float blockType = static_cast<float>(getBlock(position.x, position.y, position.z).getBlockType());
 
 	for (int i = 0; i < faceData.size(); i += 7)
 	{
@@ -204,7 +205,7 @@ bool ChunkManager::isFaceVisible(const glm::ivec3& position, const glm::ivec3& d
 		neighborPos.y >= 0 && neighborPos.y < CHUNK_HEIGHT &&
 		neighborPos.z >= 0 && neighborPos.z < CHUNK_DEPTH)
 	{
-		return blocks[neighborPos.x][neighborPos.y][neighborPos.z].isAir();
+		return getBlock(neighborPos.x, neighborPos.y, neighborPos.z).isAir();
 	}
 	else
 	{
@@ -225,11 +226,16 @@ bool ChunkManager::isBlockAir(const glm::ivec3& localPos)
 		return true;
 	}
 	
-	return blocks[localPos.x][localPos.y][localPos.z].isAir();
+	return getBlock(localPos.x, localPos.y, localPos.z).isAir();
 }
 
 void ChunkManager::markDirty() {
 	dirty = true;
+}
+
+inline Block& ChunkManager::getBlock(int x, int y, int z) 
+{
+	return blocks[x + CHUNK_WIDTH * (y + CHUNK_HEIGHT * z)];
 }
 
 ChunkManager::~ChunkManager()
