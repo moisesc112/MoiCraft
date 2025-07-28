@@ -2,6 +2,7 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Camera.h"
 

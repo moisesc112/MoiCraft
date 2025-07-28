@@ -147,9 +147,10 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ChunkManager.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Includes\glad.c" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="MoiCraft.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WorldManager.cpp" />
@@ -273,6 +274,8 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChunkManager.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Includes\glm\common.hpp" />
     <ClInclude Include="Includes\glm\detail\func_common.hpp" />
     <ClInclude Include="Includes\glm\detail\func_exponential.hpp" />

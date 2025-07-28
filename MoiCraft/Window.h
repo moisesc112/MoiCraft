@@ -2,6 +2,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 class Window
@@ -13,6 +14,7 @@ public:
 	void swapBuffers();
 	void pollEvents();
 	bool shouldClose() const;
+	void clearColor();
 
 	GLFWwindow* getGLFWwindow();
 
