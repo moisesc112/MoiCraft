@@ -3,7 +3,10 @@
 WorldManager::WorldManager()
 {
 	this->worldSeed = static_cast<unsigned int>(std::time(nullptr));
+}
 
+void WorldManager::initialize()
+{
 	for (int i = -RENDER_DISTANCE; i <= RENDER_DISTANCE; i++)
 	{
 		for (int j = -RENDER_DISTANCE; j <= RENDER_DISTANCE; j++)
@@ -12,7 +15,7 @@ WorldManager::WorldManager()
 		}
 	}
 
-	for(auto it = chunks.begin(); it != chunks.end(); ++it) 
+	for (auto it = chunks.begin(); it != chunks.end(); ++it)
 	{
 		ChunkManager* chunk = it->second;
 		chunk->setWorld(this);
@@ -25,16 +28,15 @@ WorldManager::WorldManager()
 	}
 }
 
-
 void WorldManager::loadChunk(int x, int z, bool initialize)
 {
 	ChunkCoord chunkCoord(x, z);
 	if (chunks.find(chunkCoord) == chunks.end())
 	{
 		chunks[chunkCoord] = new ChunkManager(glm::ivec3(x * CHUNK_WIDTH, 0, z * CHUNK_DEPTH), worldSeed);
+		chunks[chunkCoord]->setWorld(this);
 		if (initialize)
 		{
-			chunks[chunkCoord]->setWorld(this);
 			chunks[chunkCoord]->initializeMesh();
 		}
 		

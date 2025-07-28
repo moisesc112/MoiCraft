@@ -7,23 +7,16 @@ TextureManager::TextureManager()
     textures[BlockType::Grass] = "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_top.jpg";
     textures[BlockType::Dirt] = "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/perfect_dirt.jpg";
     textures[BlockType::Stone] = "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/stone.jpg";
-    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_top.jpg");
-    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/perfect_dirt.jpg");
-    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/stone.jpg");
-    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_side.jpg");
 }
 
 void TextureManager::AddTextures()
 {
    
-    //textures[BlockType::Stone] = "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/stone.jpg";
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_top.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/perfect_dirt.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/stone.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_side.jpg");
     
-
-    for (const auto& pair : textures)
-    {  
-        //const char* texturePath = pair.second;
-        //InitializeTextures(texturePath);
-    }
 }
 
 void TextureManager::InitializeTextures(const char* texturePath)

@@ -9,7 +9,8 @@ ChunkManager::ChunkManager()
 ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 {
 	this->chunkPosition = position;
-	
+
+	block = Block(glm::ivec3(0));
 	faceData = block.getFaceData();
 
 	siv::PerlinNoise noiseGenerator(seed);

@@ -61,3 +61,9 @@ void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 
 	Camera::getInstance()->updateProjection(width, height);
 }
+
+void Window::clearColor()
+{
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
