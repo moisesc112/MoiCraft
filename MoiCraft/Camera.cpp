@@ -3,18 +3,20 @@
 
 Camera* Camera::instance = nullptr;
 
-Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, unsigned int screenWidth, unsigned int screenHeight)
+Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up, float speed, float yaw, float pitch, float fov, unsigned int screenWidth, unsigned int screenHeight)
 {
 	this->position = position;
-	this->front = front;
 	this->up = up;
 	this->speed = speed;
+	this->yaw = yaw;
+	this->pitch = pitch;
+	this->fov = fov;
 	this->screenWidth = screenWidth;
 	this->screenHeight = screenHeight;
+	this->front = calculateDirection(yaw, pitch);
 
 	view = glm::mat4(1.0f);
-	projection = glm::mat4(1.0f);
-	projection = glm::perspective(glm::radians(70.0f), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
+	projection = glm::perspective(fov, (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 }
 
 void Camera::setInstance(Camera* camera)
@@ -27,12 +29,12 @@ Camera* Camera::getInstance()
 	return instance;
 }
 
-glm::mat4 Camera::getViewMatrix()
+glm::mat4 Camera::getViewMatrix() const
 {
-	return view = glm::lookAt(position, position + front, up);;
+	return glm::lookAt(position, position + front, up);;
 }
 
-glm::mat4 Camera::getProjectionMatrix()
+glm::mat4 Camera::getProjectionMatrix() const
 {
 	return projection;
 }
@@ -42,21 +44,33 @@ glm::vec3 Camera::getPosition() const
 	return position;
 }
 
+glm::vec3 Camera::calculateDirection(float yaw, float pitch)
+{
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	return glm::normalize(direction);
+}
+
 void Camera::processKeyboard(char keyPress)
 {
+	glm::vec3 horizontalFront = glm::normalize(glm::vec3(front.x, 0.0f, front.z));
+	glm::vec3 right = glm::normalize(glm::cross(front, up));
+
 	switch (keyPress)
 	{
 		case 'W':
-			position += speed * front;
+			position += speed * horizontalFront;
 			break;
 		case 'A':
-			position -= glm::normalize(glm::cross(front, up)) * speed;
+			position -= right * speed;
 			break;
 		case 'S':
-			position -= speed * front;
+			position -= speed * horizontalFront;
 			break;
 		case 'D':
-			position += glm::normalize(glm::cross(front, up)) * speed;
+			position += right * speed;
 			break;
 		case '_':
 			position += speed * up;
@@ -70,46 +84,37 @@ void Camera::processKeyboard(char keyPress)
 
 void Camera::cursorCallback(GLFWwindow* window, double mouseX, double mouseY)
 {
-	if (instance)
+	if (!instance)
 	{
-		instance->processCursor(mouseX, mouseY);
+		return;
 	}
+
+	if (instance->firstLook)
+	{
+		instance->oldMousePosition = glm::vec2(mouseX, mouseY);
+		instance->firstLook = false;
+		return; 
+	}
+
+	instance->processCursor(mouseX, mouseY);
+	
 }
 
 void Camera::processCursor(double mouseX, double mouseY)
 {
-	double centerX = screenWidth / 2.0;
-	double centerY = screenHeight / 2.0f;
-
-	double offsetX = mouseX - centerX;
-	double offsetY = mouseY- centerY;
-
-	glm::vec2 currentMouse = glm::vec2(offsetX, offsetY);
-
-	static bool firstLook = true;
-	if (firstLook)
-	{
-		oldMousePosition = currentMouse;
-		firstLook = false;
-	}
-
+	glm::vec2 currentMouse = glm::vec2(mouseX, mouseY);
 	glm::vec2 mouseDelta = oldMousePosition - currentMouse;
-
-	float mouseSensitivity = 0.5f;
-
-	yaw = mouseDelta.x * mouseSensitivity;
-	pitch = mouseDelta.y * mouseSensitivity;
-
-	//std::cout << "mouseX: " << mouseX << std::endl;
-	//std::cout << "pitch: " << pitch << std::endl;
-
-	front = glm::normalize(glm::rotate(front, (float)glm::radians(yaw), up));
-    front = glm::normalize(glm::rotate(front, (float)glm::radians(pitch), glm::normalize(glm::cross(front, up))));
-
 	oldMousePosition = currentMouse;
+
+	float mouseSensitivity = 0.25f;
+	yaw -= mouseDelta.x * mouseSensitivity;
+	pitch += mouseDelta.y * mouseSensitivity;
+	pitch = glm::clamp(pitch, -89.0f, 89.0f);
+
+	front = calculateDirection(yaw, pitch);
 }
 
 void Camera::updateProjection(int width, int height)
 {
-	projection = glm::perspective(glm::radians(70.0f), (float)width / (float)height, 0.1f, 100.0f);
+	projection = glm::perspective(fov, (float)width / (float)height, 0.1f, 100.0f);
 }

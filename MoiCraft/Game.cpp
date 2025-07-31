@@ -1,10 +1,19 @@
 #include "Game.h"
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <stb_image.h>
+#include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <vector>
+
 Game::Game()
-    : window(Config::screenWidth, Config::screenHeight, "MoiCraft"),
-    camera(Config::cameraPos, Config::cameraFront, Config::cameraUp, Config::cameraSpeed, Config::screenWidth, Config::screenHeight)
+    : window(Config::screenWidth, Config::screenHeight, Config::screenTitle),
+    camera(Config::cameraPos, Config::cameraFront, Config::cameraUp, Config::cameraSpeed, Config::yaw, Config::pitch, Config::fov, Config::screenWidth, Config::screenHeight)
 {
-   
+    initialize();
 }
 
 
@@ -12,6 +21,8 @@ void Game::initialize()
 {
     glfwSetInputMode(window.getGLFWwindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     Camera::setInstance(&camera);
+
+    glfwSetCursorPosCallback(window.getGLFWwindow(), Camera::cursorCallback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -29,8 +40,6 @@ void Game::initialize()
 
 void Game::run()
 {
-    initialize();
-
     while (!window.shouldClose()) 
     {
         processInput();
@@ -45,7 +54,6 @@ void Game::run()
 void Game::processInput()
 {
     inputManager.processInput(window.getGLFWwindow(), camera);
-    glfwSetCursorPosCallback(window.getGLFWwindow(), Camera::cursorCallback);
 }
 
 void Game::update()

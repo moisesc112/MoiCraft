@@ -5,9 +5,14 @@ namespace Config {
 	inline constexpr unsigned int screenWidth = 800;
 	inline constexpr unsigned int screenHeight = 600;
 
+	inline const char* screenTitle = "MoiCraft";
+
 	inline const glm::vec3 cameraPos = glm::vec3(0.0f, 25.0f, 5.0f);
 	inline const glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	inline const glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	inline constexpr float cameraSpeed = 0.05f;
+	inline constexpr float yaw = 0.0f;
+	inline constexpr float pitch = 0.0f;
+	inline constexpr float fov = glm::radians(70.0f);
 }

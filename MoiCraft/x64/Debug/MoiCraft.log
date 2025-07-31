@@ -1,2 +1,15 @@
-﻿  Game.cpp
-  MoiCraft.vcxproj -> C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe
+﻿  Camera.cpp
+  ChunkManager.cpp
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(27,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(28,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(30,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(31,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\moise\Documents\VS_projects\MoiCraft\MoiCraft\ChunkManager.cpp(154,51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Game.cpp
+  InputManager.cpp
+  Window.cpp
+  WorldManager.cpp
+  main.cpp
+  Generating Code...
+Camera.obj : error LNK2019: unresolved external symbol "public: static struct glm::tvec3<float,0> __cdecl Camera::calculateDirection(float,float)" (?calculateDirection@Camera@@SA?AU?$tvec3@M$0A@@glm@@MM@Z) referenced in function "public: __cdecl Camera::Camera(struct glm::tvec3<float,0>,struct glm::tvec3<float,0>,struct glm::tvec3<float,0>,float,float,float,float,unsigned int,unsigned int)" (??0Camera@@QEAA@U?$tvec3@M$0A@@glm@@00MMMMII@Z)
+C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe : fatal error LNK1120: 1 unresolved externals
