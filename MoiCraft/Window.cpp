@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "Camera.h"
+
 #include <iostream>
 
 Window::Window(unsigned int width, unsigned int height, const char* title)
