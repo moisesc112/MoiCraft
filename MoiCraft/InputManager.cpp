@@ -1,18 +1,10 @@
 #include "InputManager.h"
 
-InputManager::InputManager()
-{
-
-}
-
-
 void InputManager::processInput(GLFWwindow* window, Camera& camera)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
         glfwSetWindowShouldClose(window, true);
-        //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    }
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.processKeyboard('W');
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)

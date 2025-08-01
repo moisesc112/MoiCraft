@@ -9,7 +9,6 @@
 class InputManager
 {
 public:
-	InputManager();
 	void processInput(GLFWwindow* window, Camera& camera);
 private:
 };

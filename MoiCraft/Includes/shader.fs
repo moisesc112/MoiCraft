@@ -16,6 +16,8 @@ uniform sampler2D texture_Stone;
 void main()
 {
 
+    FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+
     if (blockType == 1) 
     { 
         if (faceID == 0)
@@ -32,9 +34,5 @@ void main()
     else if (blockType == 3) 
     { 
         FragColor = texture(texture_Stone, TexCoord);
-    }
-    else 
-    {
-        FragColor = vec4(1.0, 0.0, 1.0, 1.0);
     }
 }

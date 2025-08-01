@@ -16,7 +16,7 @@ public:
 	bool shouldClose() const;
 	void clearColor();
 
-	GLFWwindow* getGLFWwindow();
+	GLFWwindow* getGLFWwindow() const;
 
 private:
 	GLFWwindow* window;

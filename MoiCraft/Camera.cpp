@@ -81,7 +81,6 @@ void Camera::processKeyboard(char keyPress)
 	}
 }
 
-
 void Camera::cursorCallback(GLFWwindow* window, double mouseX, double mouseY)
 {
 	if (!instance)
