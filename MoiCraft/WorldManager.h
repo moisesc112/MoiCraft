@@ -2,7 +2,6 @@
 #ifndef WORLDMANAGER_H
 #define WORLDMANAGER_H
 
-#include <iostream>
 #include <unordered_map>
 #include <shader_s.h>
 #include "ChunkManager.h"
@@ -27,7 +26,7 @@ namespace std {
 		std::size_t operator()(const ChunkCoord& coord) const {
 			std::size_t h1 = std::hash<int>()(coord.x);
 			std::size_t h2 = std::hash<int>()(coord.z);
-			return h1 ^ (h2 << 1); // Combine hashes using bitwise ops
+			return h1 ^ (h2 << 1); 
 		}
 	};
 }
@@ -37,12 +36,14 @@ class WorldManager
 public:
 	WorldManager();
 	~WorldManager();
+
 	void initialize();
-	void draw(Shader& shader);
 	void update(const Camera& camera);
+	void draw(Shader& shader);
+
 	void loadChunk(int x, int z, bool initialize);
 	void unloadChunk(int playerChunkPosX, int playerChunkPosZ);
-	//Block* getBlock(float x, float y, float z);
+	
 	bool isBlockAir(const glm::ivec3& worldPos);
 private:
 	std::unordered_map<ChunkCoord, ChunkManager*> chunks;

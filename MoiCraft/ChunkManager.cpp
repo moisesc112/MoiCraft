@@ -1,19 +1,17 @@
 #include "ChunkManager.h"
 #include "WorldManager.h"
 
-ChunkManager::ChunkManager()
-{
+#include <iostream>
 
-}
 
 ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 {
 	this->chunkPosition = position;
 
-	block = Block(glm::ivec3(0));
+	Block block = Block(glm::ivec3(0));
 	faceData = block.getFaceData();
 
-	siv::PerlinNoise noiseGenerator(seed);
+	noiseGenerator = siv::PerlinNoise(seed);
 
 	blocks.resize(CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPTH);
 
@@ -23,12 +21,11 @@ ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 		{
 			for (int k = 0; k < CHUNK_DEPTH; ++k)
 			{			
+				float worldPosX = static_cast<float>(chunkPosition.x + i);
+				float worldPosZ = static_cast<float>(chunkPosition.z + k);
 
-				float worldPosX = chunkPosition.x + i;
-				float worldPosZ = chunkPosition.z + k;
-
-				float base = noiseGenerator.noise2D_01(worldPosX * 0.01f, worldPosZ * 0.01f) * 0.05f;
-				float mountain = std::pow(noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f), 1.5f) * 30.0f;
+				float base = static_cast<float>(noiseGenerator.noise2D_01(worldPosX * 0.01f, worldPosZ * 0.01f) * 0.05f);
+				float mountain = static_cast<float>(std::pow(noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f), 1.5) * 30.0);
 				float height = base + mountain;
 
 				if (j <= height) {
@@ -71,6 +68,7 @@ void ChunkManager::initializeMesh()
 	}
 
 	generateMesh();
+
 	if (!meshInitialized)
 	{
 		glGenVertexArrays(1, &VAO);
@@ -96,6 +94,8 @@ void ChunkManager::initializeMesh()
 	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(3);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glBindVertexArray(0);
 
 	dirty = false;
 }
@@ -151,16 +151,16 @@ void ChunkManager::draw(Shader& ourShader)
 	ourShader.setMat4("model", model);
 
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 7);
+	glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices.size() / 7));
 }
 
 
-unsigned int ChunkManager::getVAO()
+unsigned int ChunkManager::getVAO() const
 {
 	return VAO;
 }
 
-unsigned int ChunkManager::getVBO()
+unsigned int ChunkManager::getVBO() const
 {
 	return VBO;
 }
@@ -178,15 +178,19 @@ void ChunkManager::deleteVBO()
 void ChunkManager::addFace(const std::vector<float>& faceData, const glm::ivec3& position)
 {
 	float blockType = static_cast<float>(getBlock(position.x, position.y, position.z).getBlockType());
+	float px = static_cast<float>(position.x);
+	float py = static_cast<float>(position.y);
+	float pz = static_cast<float>(position.z);
 
-	for (int i = 0; i < faceData.size(); i += 7)
+	for (size_t i = 0; i < faceData.size(); i += 7)
 	{
-		float x = faceData[i + 0] + position.x;
-		float y = faceData[i + 1] + position.y;
-		float z = faceData[i + 2] + position.z;
-		float u = faceData[i + 3];
-		float v = faceData[i + 4];
-		float faceID = faceData[i + 5];
+		size_t base = i;
+		float x = faceData[base + 0] + px;
+		float y = faceData[base + 1] + py;
+		float z = faceData[base + 2] + pz;
+		float u = faceData[base + 3];
+		float v = faceData[base + 4];
+		float faceID = faceData[base + 5];
 
 		vertices.push_back(x);
 		vertices.push_back(y);
@@ -198,7 +202,7 @@ void ChunkManager::addFace(const std::vector<float>& faceData, const glm::ivec3&
 	}
 }
 
-bool ChunkManager::isFaceVisible(const glm::ivec3& position, const glm::ivec3& direction)
+bool ChunkManager::isFaceVisible(const glm::ivec3& position, const glm::ivec3& direction) 
 {
 	glm::ivec3 neighborPos = position + direction;
 
@@ -217,7 +221,7 @@ bool ChunkManager::isFaceVisible(const glm::ivec3& position, const glm::ivec3& d
 
 }
 
-bool ChunkManager::isBlockAir(const glm::ivec3& localPos)
+bool ChunkManager::isBlockAir(const glm::ivec3& localPos) 
 {
 
 	if (localPos.x < 0 || localPos.x >= CHUNK_WIDTH ||
@@ -234,9 +238,12 @@ void ChunkManager::markDirty() {
 	dirty = true;
 }
 
-inline Block& ChunkManager::getBlock(int x, int y, int z) 
+Block& ChunkManager::getBlock(int x, int y, int z) 
 {
-	return blocks[x + CHUNK_WIDTH * (y + CHUNK_HEIGHT * z)];
+	size_t index = static_cast<size_t>(x) +
+		static_cast<size_t>(CHUNK_WIDTH) * (
+			static_cast<size_t>(y) + static_cast<size_t>(CHUNK_HEIGHT) * static_cast<size_t>(z));
+	return blocks[index];
 }
 
 ChunkManager::~ChunkManager()

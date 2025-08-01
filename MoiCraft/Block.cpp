@@ -1,10 +1,10 @@
 #include "Block.h"
+
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-//create separate vectors for each face of the cube to render them separate
 
 std::vector<float> FACE_FRONT = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 5.0f, 0.0f,
@@ -82,13 +82,6 @@ Block::Block(glm::ivec3 position)
     blockType = BlockType::Stone;
 }
 
-
-void Block::setVertices(std::vector<float> vertices)
-{
-    this->vertices = vertices;
-}
-
-
 const std::vector<std::vector<float>> Block::getFaceData()
 {
     return GLOBAL_FACE_DATA;
@@ -105,7 +98,7 @@ bool Block::isAir()
     } 
 }
 
-BlockType Block::getBlockType()
+BlockType Block::getBlockType() const
 {
     return blockType;
 }

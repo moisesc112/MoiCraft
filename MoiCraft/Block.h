@@ -4,7 +4,6 @@
 #define BLOCK_H
 
 #include <glm/glm.hpp>
-#include <shader_s.h>
 #include <vector>
 
 enum class BlockType
@@ -31,17 +30,16 @@ public:
 
 	Block();
 	Block(glm::ivec3 position);
-	void setVertices(std::vector<float> vertices);
+
 	const std::vector<std::vector<float>> getFaceData();
+
 	bool isAir();
-	BlockType getBlockType();
+	BlockType getBlockType() const;
 	void setBlockType(BlockType blockType);
 
 private:
 	glm::ivec3 position;
-	std::vector<float> vertices;
 	BlockType blockType;
-
 };
 
 #endif

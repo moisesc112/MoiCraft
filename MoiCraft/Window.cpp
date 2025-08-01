@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+GLFWwindow* window = nullptr;
+
 Window::Window(unsigned int width, unsigned int height, const char* title)
 {
 	this->width = width;
@@ -18,8 +20,8 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-	window = glfwCreateWindow(width, height, title, NULL, NULL);
-	if (window == NULL)
+	window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	if (!window)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -51,9 +53,15 @@ bool Window::shouldClose() const
 	return glfwWindowShouldClose(window);
 }
 
-GLFWwindow* Window::getGLFWwindow()
+GLFWwindow* Window::getGLFWwindow() const
 {
 	return window;
+}
+
+void Window::clearColor()
+{
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
@@ -61,10 +69,4 @@ void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 
 	Camera::getInstance()->updateProjection(width, height);
-}
-
-void Window::clearColor()
-{
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

@@ -14,81 +14,13 @@ void WorldManager::initialize()
 			loadChunk(i, j, false);
 		}
 	}
-
-	for (auto it = chunks.begin(); it != chunks.end(); ++it)
+	
+	for (auto& pair : chunks)
 	{
-		ChunkManager* chunk = it->second;
-		chunk->setWorld(this);
+		pair.second->setWorld(this);
+		pair.second->initializeMesh();
 	}
-
-	for (auto it = chunks.begin(); it != chunks.end(); ++it)
-	{
-		ChunkManager* chunk = it->second;
-		chunk->initializeMesh();
-	}
-}
-
-void WorldManager::loadChunk(int x, int z, bool initialize)
-{
-	ChunkCoord chunkCoord(x, z);
-	if (chunks.find(chunkCoord) == chunks.end())
-	{
-		chunks[chunkCoord] = new ChunkManager(glm::ivec3(x * CHUNK_WIDTH, 0, z * CHUNK_DEPTH), worldSeed);
-		chunks[chunkCoord]->setWorld(this);
-		if (initialize)
-		{
-			chunks[chunkCoord]->initializeMesh();
-		}
-		
-		else
-		{
-			ChunkCoord neighbors[4] = {
-			ChunkCoord(x + 1, z),
-			ChunkCoord(x - 1, z),
-			ChunkCoord(x, z + 1),
-			ChunkCoord(x, z - 1)
-			};
-
-			for (const auto& neighbor : neighbors) 
-			{
-				auto it = chunks.find(neighbor);
-				if (it != chunks.end()) {
-					it->second->markDirty();
-				}
-			}
-		}
-		
-	}
-}
-
-
-void WorldManager::unloadChunk(int playerChunkPosX, int playerChunkPosZ)
-{
-	for (auto it = chunks.begin(); it != chunks.end();)
-	{
-		int dx = it->first.x - playerChunkPosX;
-		int dz = it->first.z - playerChunkPosZ;
-
-		if (std::abs(dx) > RENDER_DISTANCE || std::abs(dz) > RENDER_DISTANCE)
-		{
-			delete it->second;
-			it = chunks.erase(it);
-		}
-		else
-		{
-			++it;
-		}
-	}
-}
-
-void WorldManager::draw(Shader& ourShader)
-{
-	for (const auto& pair : chunks)
-	{
-		ChunkManager* chunk = pair.second;
-		chunk->draw(ourShader);
-
-	}
+	
 }
 
 void WorldManager::update(const Camera& camera)
@@ -111,11 +43,63 @@ void WorldManager::update(const Camera& camera)
 		}
 	}
 
-
 	for (auto& pair : chunks)
 	{
 		pair.second->setWorld(this);
 		pair.second->initializeMesh();
+	}
+}
+
+void WorldManager::draw(Shader& shader)
+{
+	for (const auto& pair : chunks)
+		pair.second->draw(shader);
+}
+
+void WorldManager::loadChunk(int x, int z, bool initialize)
+{
+	ChunkCoord chunkCoord(x, z);
+	if (chunks.find(chunkCoord) == chunks.end())
+	{
+		chunks[chunkCoord] = new ChunkManager(glm::ivec3(x * CHUNK_WIDTH, 0, z * CHUNK_DEPTH), worldSeed);
+		chunks[chunkCoord]->setWorld(this);
+		if (initialize)
+			chunks[chunkCoord]->initializeMesh();
+		else
+		{
+			ChunkCoord neighbors[4] = {
+			ChunkCoord(x + 1, z),
+			ChunkCoord(x - 1, z),
+			ChunkCoord(x, z + 1),
+			ChunkCoord(x, z - 1)
+			};
+
+			for (const auto& neighbor : neighbors)
+			{
+				auto it = chunks.find(neighbor);
+				if (it != chunks.end()) {
+					it->second->markDirty();
+				}
+			}
+		}
+
+	}
+}
+
+void WorldManager::unloadChunk(int playerChunkPosX, int playerChunkPosZ)
+{
+	for (auto it = chunks.begin(); it != chunks.end();)
+	{
+		int dx = it->first.x - playerChunkPosX;
+		int dz = it->first.z - playerChunkPosZ;
+
+		if (std::abs(dx) > RENDER_DISTANCE || std::abs(dz) > RENDER_DISTANCE)
+		{
+			delete it->second;
+			it = chunks.erase(it);
+		}
+		else
+			++it;
 	}
 }
 
@@ -127,9 +111,7 @@ bool WorldManager::isBlockAir(const glm::ivec3& worldPos)
 	ChunkCoord chunkCoord(chunkX, chunkZ);
 	auto it = chunks.find(chunkCoord);
 	if (it == chunks.end())
-	{
 		return true;
-	}
 
 	ChunkManager* chunk = it->second;
 
@@ -141,9 +123,7 @@ bool WorldManager::isBlockAir(const glm::ivec3& worldPos)
 
 
 	if (localPos.y < 0 || localPos.y >= CHUNK_HEIGHT)
-	{
 		return true;
-	}
 
 	return chunk->isBlockAir(localPos);
 }
@@ -151,8 +131,7 @@ bool WorldManager::isBlockAir(const glm::ivec3& worldPos)
 WorldManager::~WorldManager()
 {
 	for (auto& pair : chunks)
-	{
 		delete pair.second;
-	}
+	
 	chunks.clear();
 }
