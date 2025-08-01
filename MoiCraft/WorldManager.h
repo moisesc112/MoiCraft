@@ -3,6 +3,8 @@
 #define WORLDMANAGER_H
 
 #include <unordered_map>
+#include <unordered_set>
+#include <queue>
 #include <shader_s.h>
 #include "ChunkManager.h"
 #include "Camera.h"
@@ -38,16 +40,24 @@ public:
 	~WorldManager();
 
 	void initialize();
-	void update(const Camera& camera);
+	void update(const Camera& camera, float deltaTime);
 	void draw(Shader& shader);
 
-	void loadChunk(int x, int z, bool initialize);
+	void loadChunk(int x, int z);
 	void unloadChunk(int playerChunkPosX, int playerChunkPosZ);
 	
 	bool isBlockAir(const glm::ivec3& worldPos);
 private:
 	std::unordered_map<ChunkCoord, ChunkManager*> chunks;
 	unsigned int worldSeed;
+	std::queue<ChunkCoord> chunkLoadQueue;
+	std::vector<ChunkCoord> chunkLoadStagedCurrent;
+	std::vector<ChunkCoord> chunkLoadStagedLast;
+	std::unordered_set<ChunkCoord> chunkLoadQueuedSet;
+	std::vector<ChunkCoord> dirtyChunks;
+	int chunksPerFrame = 1;
+	float chunkLoadCooldown = 0.1f; 
+	float chunkLoadTimer = 0.0f;
 };
 
 #endif
