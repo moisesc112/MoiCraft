@@ -1,12 +1,6 @@
-﻿  Block.cpp
-  Camera.cpp
-  ChunkManager.cpp
+﻿  ChunkManager.cpp
   Game.cpp
-  InputManager.cpp
-  main.cpp
-  TextureManager.cpp
-  Window.cpp
   WorldManager.cpp
+  main.cpp
   Generating Code...
-  glad.c
   MoiCraft.vcxproj -> C:\Users\moise\Documents\VS_projects\MoiCraft\x64\Debug\MoiCraft.exe

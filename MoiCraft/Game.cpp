@@ -9,6 +9,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
+float lastFrameTime = 0.0f;
+float deltaTime = 0.0f;
+
 Game::Game()
     : window(Config::screenWidth, Config::screenHeight, Config::screenTitle),
     camera(Config::cameraPos, Config::cameraFront, Config::cameraUp, Config::cameraSpeed, Config::yaw, Config::pitch, Config::fov, Config::screenWidth, Config::screenHeight)
@@ -58,7 +61,10 @@ void Game::processInput()
 
 void Game::update()
 {
-    worldManager.update(camera);
+    float currentTime = static_cast<float>(glfwGetTime());
+    deltaTime = currentTime - lastFrameTime;
+    lastFrameTime = currentTime;
+    worldManager.update(camera, deltaTime);
 }
 
 void Game::render()
