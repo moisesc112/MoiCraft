@@ -8,6 +8,12 @@
 #include <shader_s.h>
 #include "ChunkManager.h"
 #include "Camera.h"
+#include <thread>
+#include <mutex>
+#include <queue>
+#include <condition_variable>
+#include <atomic>
+
 
 #define RENDER_DISTANCE 5
 
@@ -15,6 +21,7 @@ struct ChunkCoord {
 	int x;
 	int z;
 
+	ChunkCoord() : x(0), z(0) {}
 	ChunkCoord(int x_, int z_) : x(x_), z(z_) {}
 
 	bool operator==(const ChunkCoord& other) const {
@@ -32,6 +39,13 @@ namespace std {
 		}
 	};
 }
+
+struct ChunkData
+{
+	ChunkCoord coord;
+	ChunkManager* chunk;
+};
+
 
 class WorldManager
 {
@@ -55,9 +69,18 @@ private:
 	std::vector<ChunkCoord> chunkLoadStagedLast;
 	std::unordered_set<ChunkCoord> chunkLoadQueuedSet;
 	std::vector<ChunkCoord> dirtyChunks;
-	int chunksPerFrame = 1;
+	int chunksPerFrame = 10;
 	float chunkLoadCooldown = 0.1f; 
 	float chunkLoadTimer = 0.0f;
+
+	std::thread chunkWorker;
+	std::queue<ChunkCoord> chunkLoadRequestQueue;
+	std::queue<ChunkData> readyChunks;
+
+	std::mutex chunkQueueMutex;
+	std::condition_variable chunkQueueCV;
+	std::atomic<bool> terminateWorker = false;
+
 };
 
 #endif

@@ -24,8 +24,8 @@ ChunkManager::ChunkManager(glm::ivec3 position, unsigned int seed)
 				float worldPosX = static_cast<float>(chunkPosition.x + i);
 				float worldPosZ = static_cast<float>(chunkPosition.z + k);
 
-				float base = static_cast<float>(noiseGenerator.noise2D_01(worldPosX * 0.01f, worldPosZ * 0.01f) * 0.05f);
-				float mountain = static_cast<float>(std::pow(noiseGenerator.noise2D_01(worldPosX * 0.05f, worldPosZ * 0.05f), 1.5) * 30.0);
+				float base = static_cast<float>(noiseGenerator.noise2D_01(static_cast<double>(worldPosX * 0.01), static_cast<double>(worldPosZ * 0.01)) * 0.05f);
+				float mountain = static_cast<float>(std::pow(noiseGenerator.noise2D_01(static_cast<double>(worldPosX * 0.05), static_cast<double>(worldPosZ * 0.05)), 1.5) * 30.0);
 				float height = base + mountain;
 
 				if (j <= height) {
