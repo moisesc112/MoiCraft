@@ -7,20 +7,45 @@ WorldManager::WorldManager()
 
 void WorldManager::initialize()
 {
+
+	chunkWorker = std::thread([this]() {
+		while (!terminateWorker) {
+			ChunkCoord coord;
+			{
+				std::unique_lock<std::mutex> lock(chunkQueueMutex);
+				chunkQueueCV.wait(lock, [this]() {
+					return !chunkLoadRequestQueue.empty() || terminateWorker;
+					});
+
+				if (terminateWorker) break;
+				coord = chunkLoadRequestQueue.front();
+				chunkLoadRequestQueue.pop();
+			}
+
+			ChunkManager* chunk = new ChunkManager(glm::ivec3(coord.x * CHUNK_WIDTH, 0, coord.z * CHUNK_DEPTH), worldSeed);
+
+			{
+				std::lock_guard<std::mutex> lock(chunkQueueMutex);
+				readyChunks.push({ coord, chunk });
+			}
+		}
+		});
+
+
 	for (int i = -RENDER_DISTANCE; i <= RENDER_DISTANCE; i++)
 	{
 		for (int j = -RENDER_DISTANCE; j <= RENDER_DISTANCE; j++)
 		{
-			loadChunk(i, j);
+			ChunkCoord coord(i, j);
+			chunkLoadQueuedSet.insert(coord);
+
+			{
+				std::lock_guard<std::mutex> lock(chunkQueueMutex);
+				chunkLoadRequestQueue.push(coord);
+			}
+			chunkQueueCV.notify_one(); 
 		}
 	}
-	
-	for (auto& pair : chunks)
-	{
-		pair.second->setWorld(this);
-		pair.second->initializeMesh();
-	}
-	
 }
 
 void WorldManager::update(const Camera& camera, float deltaTime)
@@ -61,18 +86,60 @@ void WorldManager::update(const Camera& camera, float deltaTime)
 			ChunkCoord coord = chunkLoadQueue.front();
 			chunkLoadQueue.pop();
 
-			loadChunk(coord.x, coord.z);
+			{
+				std::lock_guard<std::mutex> lock(chunkQueueMutex);
+				chunkLoadRequestQueue.push(coord);
+			}
+
+			chunkQueueCV.notify_one();
 			loaded++;
 		}
 
 		chunkLoadTimer = 0.0f; 
 	}
 
+	{
+		std::lock_guard<std::mutex> lock(chunkQueueMutex);
+		while (!readyChunks.empty())
+		{
+			ChunkData data = readyChunks.front();
+			readyChunks.pop();
+
+			chunks[data.coord] = data.chunk;
+			chunkLoadQueuedSet.erase(data.coord);
+			chunkLoadStagedCurrent.push_back(data.coord);
+		}
+	}
+
+
 	for (ChunkCoord& coord : chunkLoadStagedLast)
 	{
 		if (chunks.find(coord) != chunks.end()) {
-			chunks[coord]->setWorld(this);
-			chunks[coord]->initializeMesh();
+			ChunkCoord neighbors[4] = {
+			ChunkCoord(coord.x + 1, coord.z),
+			ChunkCoord(coord.x - 1, coord.z),
+			ChunkCoord(coord.x, coord.z + 1),
+			ChunkCoord(coord.x, coord.z - 1)
+			};
+
+			bool allNeighborsExist = true;
+			for (const auto& neighbor : neighbors)
+			{
+				if (chunks.find(neighbor) == chunks.end()) {
+					allNeighborsExist = false;
+					break;
+				}
+			}
+
+			if (allNeighborsExist)
+			{
+				chunks[coord]->setWorld(this);
+				chunks[coord]->initializeMesh();
+			}
+			else
+			{
+				chunkLoadStagedCurrent.push_back(coord);
+			}
 		}
 	}
 
@@ -176,6 +243,12 @@ bool WorldManager::isBlockAir(const glm::ivec3& worldPos)
 
 WorldManager::~WorldManager()
 {
+	terminateWorker = true;
+	chunkQueueCV.notify_all();
+	if (chunkWorker.joinable())
+		chunkWorker.join();
+
+
 	for (auto& pair : chunks)
 		delete pair.second;
 	

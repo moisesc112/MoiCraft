@@ -11,6 +11,8 @@
 
 float lastFrameTime = 0.0f;
 float deltaTime = 0.0f;
+float totalTime = 0.0f;
+int frameCount = 0;
 
 Game::Game()
     : window(Config::screenWidth, Config::screenHeight, Config::screenTitle),
@@ -64,6 +66,17 @@ void Game::update()
     float currentTime = static_cast<float>(glfwGetTime());
     deltaTime = currentTime - lastFrameTime;
     lastFrameTime = currentTime;
+
+    totalTime += deltaTime;
+    frameCount++;
+
+    if (totalTime >= 1.0f)
+    {
+        std::cout << "FPS: " << frameCount << "\n";
+        frameCount = 0;
+        totalTime = 0.0f;
+    }
+
     worldManager.update(camera, deltaTime);
 }
 
