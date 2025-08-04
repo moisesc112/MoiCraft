@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GAME_H
 #define GAME_H
 
@@ -21,6 +22,12 @@ private:
 	void processInput();
 	void update();
 	void render();
+
+private:
+	float lastFrameTime = 0.0f;
+	float deltaTime = 0.0f;
+	float totalTime = 0.0f;
+	int frameCount = 0;
 
 	Window window;
 	Camera camera;

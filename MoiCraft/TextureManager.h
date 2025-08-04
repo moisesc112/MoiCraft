@@ -12,9 +12,11 @@ class TextureManager
 public:
 	void AddTextures();
 	void ActivateTexture(Shader& ourShader);
+
 private:
 	void InitializeTextures(const char* texturePath);
 
+private:
 	std::unordered_map<BlockType, const char*> textures;
 	std::vector<unsigned int> textureIDs;
 };

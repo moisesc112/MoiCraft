@@ -9,11 +9,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-float lastFrameTime = 0.0f;
-float deltaTime = 0.0f;
-float totalTime = 0.0f;
-int frameCount = 0;
-
 Game::Game()
     : window(Config::screenWidth, Config::screenHeight, Config::screenTitle),
     camera(Config::cameraPos, Config::cameraFront, Config::cameraUp, Config::cameraSpeed, Config::yaw, Config::pitch, Config::fov, Config::screenWidth, Config::screenHeight)
@@ -69,13 +64,6 @@ void Game::update()
 
     totalTime += deltaTime;
     frameCount++;
-
-    if (totalTime >= 1.0f)
-    {
-        std::cout << "FPS: " << frameCount << "\n";
-        frameCount = 0;
-        totalTime = 0.0f;
-    }
 
     worldManager.update(camera, deltaTime);
 }
