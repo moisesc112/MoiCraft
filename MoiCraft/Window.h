@@ -19,12 +19,13 @@ public:
 	GLFWwindow* getGLFWwindow() const;
 
 private:
+	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+
+private:
 	GLFWwindow* window;
 	unsigned int width;
 	unsigned int height;
 	const char* title;
-
-	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 };
 
 #endif

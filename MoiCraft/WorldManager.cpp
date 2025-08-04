@@ -2,12 +2,11 @@
 
 WorldManager::WorldManager()
 {
-	this->worldSeed = static_cast<unsigned int>(std::time(nullptr));
+	worldSeed = static_cast<unsigned int>(std::time(nullptr));
 }
 
 void WorldManager::initialize()
 {
-
 	chunkWorker = std::thread([this]() {
 		while (!terminateWorker) {
 			ChunkCoord coord;
@@ -17,7 +16,9 @@ void WorldManager::initialize()
 					return !chunkLoadRequestQueue.empty() || terminateWorker;
 					});
 
-				if (terminateWorker) break;
+				if (terminateWorker) 
+					break;
+
 				coord = chunkLoadRequestQueue.front();
 				chunkLoadRequestQueue.pop();
 			}
@@ -114,7 +115,8 @@ void WorldManager::update(const Camera& camera, float deltaTime)
 
 	for (ChunkCoord& coord : chunkLoadStagedLast)
 	{
-		if (chunks.find(coord) != chunks.end()) {
+		if (chunks.find(coord) != chunks.end()) 
+		{
 			ChunkCoord neighbors[4] = {
 			ChunkCoord(coord.x + 1, coord.z),
 			ChunkCoord(coord.x - 1, coord.z),
@@ -150,12 +152,14 @@ void WorldManager::update(const Camera& camera, float deltaTime)
 	int remeshPerFrame = 1;
 	if (!dirtyChunks.empty())
 	{
-		for (int i = 0; i < remeshPerFrame && !dirtyChunks.empty(); ++i) {
+		for (int i = 0; i < remeshPerFrame && !dirtyChunks.empty(); ++i) 
+		{
 			ChunkCoord coord = dirtyChunks.front();
 			dirtyChunks.erase(dirtyChunks.begin());
 
 			auto it = chunks.find(coord);
-			if (it != chunks.end()) {
+			if (it != chunks.end()) 
+			{
 				it->second->initializeMesh();
 			}
 		}
@@ -247,7 +251,6 @@ WorldManager::~WorldManager()
 	chunkQueueCV.notify_all();
 	if (chunkWorker.joinable())
 		chunkWorker.join();
-
 
 	for (auto& pair : chunks)
 		delete pair.second;
