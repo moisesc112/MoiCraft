@@ -5,10 +5,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <shader_s.h>
 
 #include "Block.h"
-#include "PerlinNoise.hpp"
+#include "shader_s.h"
+#include "PerlinNoise/PerlinNoise.hpp"
 
 #define CHUNK_WIDTH 16
 #define CHUNK_HEIGHT 20

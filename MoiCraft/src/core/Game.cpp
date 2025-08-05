@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <stb_image.h>
+#include <stb/stb_image.h>
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -32,7 +32,7 @@ void Game::initialize()
 
     glEnable(GL_DEPTH_TEST);
 
-    shader = new Shader("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/shader.vs", "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/shader.fs");
+    shader = new Shader("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/shaders/shader.vs", "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/shaders/shader.fs");
 
     worldManager.initialize();
     textureManager.AddTextures();
