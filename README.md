@@ -47,9 +47,9 @@ Chunks are generated in a background thread using a job queue. This helps reduce
 
 ## Screenshots
 
-![Generated Terrain](MoiCraft\docs\terrain.png)
+![Generated Terrain](docs/terrain.png)
 
-![Interior face culling](MoiCraft\docs\interior.png)
+![Interior face culling](docs/interior.png)
 
 ## Build Instructions
 
