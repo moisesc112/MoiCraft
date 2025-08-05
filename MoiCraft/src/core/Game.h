@@ -8,7 +8,7 @@
 #include "TextureManager.h"
 #include "WorldManager.h"
 #include "Config.h"
-#include <shader_s.h>
+#include "shader_s.h"
 
 class Game
 {

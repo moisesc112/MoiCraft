@@ -1,14 +1,14 @@
 #include "TextureManager.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include <stb/stb_image.h>
 
 void TextureManager::AddTextures()
 {
-    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_top.jpg");
-    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/perfect_dirt.jpg");
-    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/stone.jpg");
-    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/includes/grass_side.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/assets/textures/grass_top.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/assets/textures/perfect_dirt.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/assets/textures/stone.jpg");
+    InitializeTextures("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/assets/textures/grass_side.jpg");
 }
 
 void TextureManager::InitializeTextures(const char* texturePath)
