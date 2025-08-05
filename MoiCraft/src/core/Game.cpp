@@ -31,6 +31,9 @@ void Game::initialize()
     }
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);       
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CW);
 
     shader = new Shader("C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/shaders/shader.vs", "C:/Users/moise/Documents/VS_projects/MoiCraft/MoiCraft/shaders/shader.fs");
 
