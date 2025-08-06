@@ -2,6 +2,13 @@
 
 A Minecraft-style voxel engine written in C++ using OpenGL. This project focuses on procedural terrain generation, chunk-based rendering, and performance optimization using multi-threaded chunk loading.
 
+## Screenshots
+
+![Generated Terrain](MoiCraft/docs/terrain.png)
+
+![Interior face culling](MoiCraft/docs/interior.png)
+
+
 ## Features
 
 - Written using modern OpenGL and C++
@@ -44,12 +51,6 @@ Chunks are generated in a background thread using a job queue. This helps reduce
 - 'LSHIFT' — Move Downwards
 - Mouse — Look around
 - `ESC` — Exit
-
-## Screenshots
-
-![Generated Terrain](MoiCraft/docs/terrain.png)
-
-![Interior face culling](MoiCraft/docs/interior.png)
 
 ## Build Instructions
 
