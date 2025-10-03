@@ -63,11 +63,31 @@ Chunks are generated in a background thread using a job queue. This helps reduce
 - GLAD
 - stb_image
 
+### CMake
+1. Clone the repo:
+   ```bash
+   git clone --recursive https://github.com/moisesc112/moi-craft.git
+   cd MoiCraft
+2. Configure
+   ```bash
+   mkdir build
+   cd build
+   cmake -B build -S . -G "Visual Studio 17 2022" -A x64
+3. Build project with either Release or Debug:
+   ```bash
+   cmake --build build --config Release
+   cmake --build build --config Debug
+4. Run the Game through VS 2022:
+   ```bash
+   Open .sln file, right click in Solution Explorer and set as Startup Project
+5. Or through terminal:
+   ```bash
+   .\build\<Build Type>\MoiCraft.exe (or .\build\x64\<Build Type>\MoiCraft.exe)
 ### Windows (Visual Studio)
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/moicraft.git
+   git clone https://github.com/moisesc112/moi-craft.git
    cd moicraft
 2. Open the .sln file in Visual Studio 2022.
 3. Set the build mode to Release.
